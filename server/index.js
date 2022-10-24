@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 8080
 // Import routers
 const bookRouter = require("./routes/bookRouter")
 const borrowalRouter = require("./routes/borrowalRouter")
+const genreRouter = require("./routes/genreRouter")
 
 // Connect to DB
 const mongoose = require('mongoose');
@@ -39,6 +40,7 @@ app.use(express.json())
 // Implement routes for REST API
 app.use("/api/book", bookRouter);
 app.use("/api/borrowal", borrowalRouter);
+app.use("/api/genre", genreRouter);
 
 app.get('/', (req, res) => res.send('Welcome to Library Management System'));
 
