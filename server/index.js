@@ -15,6 +15,9 @@ const PORT = process.env.PORT || 8080
 // Import routers
 const bookRouter = require("./routes/bookRouter")
 const authorRouter = require("./routes/authorRouter")
+const borrowalRouter = require("./routes/borrowalRouter")
+const genreRouter = require("./routes/bookRouter")
+const reviewRouter = require("./routes/reviewRouter")
 
 // Connect to DB
 const mongoose = require('mongoose');
@@ -28,7 +31,7 @@ mongoose.connect(process.env.MONGO_URI, {
     .catch((err) => console.log('DB connection error', err));
 
 // Use CORS for Cross Origin Resource Sharing
-app.use(cors)
+app.use(cors())
 
 // Use morgan for logging
 app.use(logger("dev"))
@@ -39,6 +42,9 @@ app.use(express.json())
 // Implement routes for REST API
 app.use("/api/book", bookRouter);
 app.use("/api/author", authorRouter);
+app.use("/api/borrowal", borrowalRouter);
+app.use("/api/genre", genreRouter);
+app.use("/api/review", reviewRouter);
 
 app.get('/', (req, res) => res.send('Welcome to Library Management System'));
 
