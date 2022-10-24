@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 8080
 
 // Import routers
 const bookRouter = require("./routes/bookRouter")
+const authorRouter = require("./routes/authorRouter")
 const borrowalRouter = require("./routes/borrowalRouter")
 const genreRouter = require("./routes/bookRouter")
 const reviewRouter = require("./routes/reviewRouter")
@@ -40,6 +41,7 @@ app.use(express.json())
 
 // Implement routes for REST API
 app.use("/api/book", bookRouter);
+app.use("/api/author", authorRouter);
 app.use("/api/borrowal", borrowalRouter);
 app.use("/api/genre", genreRouter);
 app.use("/api/review", reviewRouter);
