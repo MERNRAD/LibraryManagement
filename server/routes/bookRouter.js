@@ -11,7 +11,7 @@ const {
     deleteBook
 } = require('../controllers/bookController')
 
-router.get("/getAll", (req, res) => getAllBooks(req,res))
+router.get("/getAll", (req, res) => getAllBooks(req,res))   
 
 router.get("/get/:id", (req, res) => getBook(req, res))
 
