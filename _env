@@ -1,0 +1,2 @@
+PORT=8080
+MONGO_URI="mongodb+srv://kaveesha:kaveesha123@cluster0.hkneily.mongodb.net/LibraryManagement?retryWrites=true&w=majority"
