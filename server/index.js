@@ -1,30 +1,23 @@
-//express app
-
+// Import required modules
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const cors = require('cors');
+const logger = require('morgan')
 
+// Configure dotenv for environment variables in production
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
 
+// Setup express
 const app = express();
+const PORT = process.env.PORT || 8080
 
-//import routes
-const postRoutes = require('./routes/posts');
+// Import routers
+const bookRouter = require("./routes/bookRouter")
 
-//Middleware App
-app.use(bodyParser.json());
-app.use(cors());
-
-//Middleware Routes
-app.use(postRoutes);
-
-
-
-
-const port = 8000;
-const DB_URL = 'mongodb+srv://kaveesha:kaveesha123@cluster0.hkneily.mongodb.net/LibraryManagement?retryWrites=true&w=majority';
-
-mongoose.connect(DB_URL, {
+// Connect to DB
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -33,12 +26,18 @@ mongoose.connect(DB_URL, {
     })
     .catch((err) => console.log('DB connection error', err));
 
+// Use CORS for Cross Origin Resource Sharing
+app.use(cors)
 
+// Use morgan for logging
+app.use(logger("dev"))
 
+// Parse JSON objects in request bodies
+app.use(express.json())
 
+// Implement routes for REST API
+app.use("/api/book", bookRouter);
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => res.send('Welcome to Library Management System'));
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-// Path: package.json
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`));
