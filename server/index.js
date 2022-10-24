@@ -30,7 +30,7 @@ mongoose.connect(process.env.MONGO_URI, {
     .catch((err) => console.log('DB connection error', err));
 
 // Use CORS for Cross Origin Resource Sharing
-app.use(cors)
+app.use(cors())
 
 // Use morgan for logging
 app.use(logger("dev"))
