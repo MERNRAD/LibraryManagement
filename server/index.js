@@ -18,6 +18,7 @@ const authorRouter = require("./routes/authorRouter")
 const borrowalRouter = require("./routes/borrowalRouter")
 const genreRouter = require("./routes/bookRouter")
 const reviewRouter = require("./routes/reviewRouter")
+const memberRouter = require("./routes/memberRouter")
 
 // Connect to DB
 const mongoose = require('mongoose');
@@ -45,6 +46,7 @@ app.use("/api/author", authorRouter);
 app.use("/api/borrowal", borrowalRouter);
 app.use("/api/genre", genreRouter);
 app.use("/api/review", reviewRouter);
+app.use("/api/member", memberRouter);
 
 app.get('/', (req, res) => res.send('Welcome to Library Management System'));
 
