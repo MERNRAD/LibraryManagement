@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 
 // @mui
-import { Box, Card, Button,IconButton, Link, Popover, MenuItem, Container, Stack, Grid, Typography } from '@mui/material';
+import { Box, Card, Button, IconButton, Link, Popover, MenuItem, Container, Stack, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import Iconify from '../components/iconify';
@@ -80,9 +80,14 @@ const BookPage = () => {
 
   const addBook = () => {
     axios.post('http://localhost:8080/api/book/add', {
-      "name": book.name,
-      "description": book.description,
-      "photoUrl": book.photoUrl
+      name: book.name, 
+      isbn: book.isbn, 
+      summary: book.summary, 
+      isAvailable: book.isAvailable, 
+      authorId: book.authorId, 
+      genreId: book.genreId, 
+      photoUrl: book.photoUrl
+
     })
       .then((response) => {
         console.log(response.data);
@@ -98,9 +103,13 @@ const BookPage = () => {
 
   const updateBook = () => {
     axios.put(`http://localhost:8080/api/book/update/${selectedBookId}`, {
-      "name": book.name,
-      "description": book.description,
-      "photoUrl": book.photoUrl
+      name: book.name, 
+      isbn: book.isbn, 
+      summary: book.summary, 
+      isAvailable: book.isAvailable, 
+      authorId: book.authorId, 
+      genreId: book.genreId, 
+      photoUrl: book.photoUrl
     })
       .then((response) => {
         console.log(response.data);
@@ -224,7 +233,7 @@ const BookPage = () => {
                   >
                     {book.genreId}
                   </Label>
-                    <Label
+                  <Label
                     variant="filled"
                     sx={{
                       zIndex: 9,
@@ -234,20 +243,20 @@ const BookPage = () => {
                       textTransform: 'uppercase',
                     }}
                   >
-                     <IconButton size="large" color="inherit" onClick={(e) => {
+                    <IconButton size="large" color="inherit" onClick={(e) => {
                       setSelectedBookId(book._id)
                       handleOpenMenu(e)
                     }}>
-                      <Iconify icon={'eva:more-vertical-fill'}/>
+                      <Iconify icon={'eva:more-vertical-fill'} />
                     </IconButton>
                   </Label>
-                  
+
 
                   <StyledProductImg alt={book.name} src={book.photoUrl} />
                 </Box>
 
                 <Stack spacing={1} sx={{ p: 2 }}>
-                
+
                   <Typography variant="h5" margin={0} noWrap>{name}</Typography>
                   <Typography variant="subtitle1" noWrap>{authorId}</Typography>
                   <Button>{book.isAvailable ? 'Available' : 'N/A'}</Button>
@@ -262,34 +271,34 @@ const BookPage = () => {
       </Container>
 
       <Popover
-                    open={Boolean(isMenuOpen)}
-                    anchorEl={isMenuOpen}
-                    onClose={handleCloseMenu}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                    PaperProps={{
-                      sx: {
-                        p: 1, width: 140,  '& .MuiMenuItem-root': {
-                          px: 1, typography: 'body2', borderRadius: 0.75,
-                        },
-                      },
-                    }}
-                  >
-                      <MenuItem onClick={() => {
-                        setIsUpdateForm(true);
-                        getSelectedBookDetails();
-                        handleCloseMenu();
-                        handleOpenModal();
-                      }}>
-                        <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-                        Edit
-                      </MenuItem>
+        open={Boolean(isMenuOpen)}
+        anchorEl={isMenuOpen}
+        onClose={handleCloseMenu}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        PaperProps={{
+          sx: {
+            p: 1, width: 140, '& .MuiMenuItem-root': {
+              px: 1, typography: 'body2', borderRadius: 0.75,
+            },
+          },
+        }}
+      >
+        <MenuItem onClick={() => {
+          setIsUpdateForm(true);
+          getSelectedBookDetails();
+          handleCloseMenu();
+          handleOpenModal();
+        }}>
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          Edit
+        </MenuItem>
 
-                      <MenuItem sx={{ color: 'error.main' }} onClick={handleOpenDialog}>
-                        <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-                        Delete
-                      </MenuItem>
-                    </Popover> 
+        <MenuItem sx={{ color: 'error.main' }} onClick={handleOpenDialog}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+          Delete
+        </MenuItem>
+      </Popover>
 
       <BookForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
         id={selectedBookId} book={book} setBook={setBook}
