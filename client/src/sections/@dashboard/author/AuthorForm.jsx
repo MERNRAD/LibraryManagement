@@ -2,16 +2,6 @@ import {Box, Button, Container, Modal, Stack, TextField, Typography} from "@mui/
 import PropTypes from "prop-types";
 import Iconify from "../../../components/iconify";
 
-AuthorForm.propTypes = {
-  isUpdateForm: PropTypes.bool,
-  isModalOpen: PropTypes.bool,
-  handleCloseModal: PropTypes.func,
-  author: PropTypes.object,
-  setAuthor: PropTypes.func,
-  handleAddAuthor: PropTypes.func,
-  handleUpdateAuthor: PropTypes.func
-};
-
 const AuthorForm = ({
                       isUpdateForm,
                       isModalOpen,
@@ -90,5 +80,15 @@ const AuthorForm = ({
     </Modal>
   );
 }
+
+AuthorForm.propTypes = {
+  isUpdateForm: PropTypes.bool,
+  isModalOpen: PropTypes.bool,
+  handleCloseModal: PropTypes.func,
+  author: PropTypes.object,
+  setAuthor: PropTypes.func,
+  handleAddAuthor: PropTypes.func,
+  handleUpdateAuthor: PropTypes.func
+};
 
 export default AuthorForm

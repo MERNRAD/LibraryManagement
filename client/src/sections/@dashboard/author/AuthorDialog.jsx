@@ -1,13 +1,6 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import PropTypes from "prop-types";
 
-AuthorDialog.propTypes = {
-  isDialogOpen: PropTypes.bool,
-  handleCloseDialog: PropTypes.func,
-  authorId: PropTypes.string,
-  handleDeleteAuthor: PropTypes.func
-};
-
 const AuthorDialog = ({isDialogOpen, handleCloseDialog, authorId, handleDeleteAuthor}) => {
   return (
     <Dialog
@@ -33,5 +26,12 @@ const AuthorDialog = ({isDialogOpen, handleCloseDialog, authorId, handleDeleteAu
     </Dialog>
   )
 }
+
+AuthorDialog.propTypes = {
+  isDialogOpen: PropTypes.bool,
+  handleCloseDialog: PropTypes.func,
+  authorId: PropTypes.string,
+  handleDeleteAuthor: PropTypes.func
+};
 
 export default AuthorDialog
