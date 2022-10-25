@@ -141,7 +141,7 @@ const AuthorPage = () => {
   }
 
   const deleteAuthor = (authorId) => {
-    axios.put(`http://localhost:8080/api/author/delete/${authorId}`)
+    axios.delete(`http://localhost:8080/api/author/delete/${authorId}`)
       .then((response) => {
         handleCloseDialog();
         handleCloseMenu();

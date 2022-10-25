@@ -141,7 +141,7 @@ const GenrePage = () => {
   }
 
   const deleteGenre = (genreId) => {
-    axios.put(`http://localhost:8080/api/genre/delete/${genreId}`)
+    axios.delete(`http://localhost:8080/api/genre/delete/${genreId}`)
       .then((response) => {
         handleCloseDialog();
         handleCloseMenu();

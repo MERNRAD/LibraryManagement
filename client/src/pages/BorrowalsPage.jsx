@@ -140,7 +140,7 @@ const BorrowalsPage = () => {
   }
 
   const deleteBorrowals = (borrowalsId) => {
-    axios.put(`http://localhost:8080/api/borrowals/delete/${borrowalsId}`)
+    axios.delete(`http://localhost:8080/api/borrowals/delete/${borrowalsId}`)
       .then((response) => {
         handleCloseDialog();
         handleCloseMenu();

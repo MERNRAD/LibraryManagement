@@ -141,7 +141,7 @@ const UserPage = () => {
   }
 
   const deleteUser = (userId) => {
-    axios.put(`http://localhost:8080/api/user/delete/${userId}`)
+    axios.delete(`http://localhost:8080/api/user/delete/${userId}`)
       .then((response) => {
         handleCloseDialog();
         handleCloseMenu();
