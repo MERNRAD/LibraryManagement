@@ -19,6 +19,6 @@ router.post("/add", (req, res) => addMember(req, res))
 
 router.put("/update/:id", (req, res) => updateMember(req, res))
 
-router.put("/delete/:id", (req, res) => deleteMember(req, res))
+router.delete("/delete/:id", (req, res) => deleteMember(req, res))
 
 module.exports = router;

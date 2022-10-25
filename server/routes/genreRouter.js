@@ -19,6 +19,6 @@ router.post("/add", (req, res) => addGenre(req, res))
 
 router.put("/update/:id", (req, res) => updateGenre(req, res))
 
-router.put("/delete/:id", (req, res) => deleteGenre(req, res))
+router.delete("/delete/:id", (req, res) => deleteGenre(req, res))
 
 module.exports = router;

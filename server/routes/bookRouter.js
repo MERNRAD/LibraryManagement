@@ -19,6 +19,6 @@ router.post("/add", (req, res) => addBook(req, res))
 
 router.put("/update/:id", (req, res) => updateBook(req, res))
 
-router.put("/delete/:id", (req, res) => deleteBook(req, res))
+router.delete("/delete/:id", (req, res) => deleteBook(req, res))
 
 module.exports = router;
