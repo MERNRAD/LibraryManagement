@@ -28,7 +28,7 @@ const navConfig = [
   },
   {
     title: 'Borrowals',
-    path: '/borrowals',
+    path: '/borrowal',
     icon: icon('ic_cart'),
   },
   {
