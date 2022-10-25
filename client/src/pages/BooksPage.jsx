@@ -116,7 +116,7 @@ const BookPage = () => {
   }
 
   const deleteBook = (bookId) => {
-    axios.put(`http://localhost:8080/api/book/delete/${bookId}`)
+    axios.delete(`http://localhost:8080/api/book/delete/${bookId}`)
       .then((response) => {
         handleCloseDialog();
         handleCloseMenu();
