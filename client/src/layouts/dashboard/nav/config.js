@@ -18,7 +18,7 @@ const navConfig = [
   },
   {
     title: 'Authors',
-    path: '/dashboard/authors',
+    path: '/authors',
     icon: icon('ic_user'),
   },
   {

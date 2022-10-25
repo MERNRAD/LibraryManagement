@@ -7,7 +7,7 @@ import BlogPage from './pages/BlogPage';
 import AuthorPage from './pages/AuthorPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
+import BooksPage from './pages/BooksPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 
 // ----------------------------------------------------------------------
@@ -21,7 +21,7 @@ export default function Router() {
         { element: <Navigate to="/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'authors', element: <AuthorPage /> },
-        { path: 'products', element: <ProductsPage /> },
+        { path: 'books', element: <BooksPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
