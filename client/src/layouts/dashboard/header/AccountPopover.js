@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import {useState} from 'react';
 // @mui
-import { alpha } from '@mui/material/styles';
-import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
+import {alpha} from '@mui/material/styles';
+import {Avatar, Box, Divider, IconButton, MenuItem, Popover, Stack, Typography} from '@mui/material';
 // mocks_
+import axios from "axios";
 import account from '../../../_mock/account';
+import {useAuth} from "../../../useAuth";
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +19,26 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const {user} = useAuth();
+  const {logout} = useAuth();
   const [open, setOpen] = useState(null);
+
+  const logoutUser = () => {
+    handleClose();
+    axios.get(`http://localhost:8080/api/auth/logout`, {withCredentials: true})
+      .then((response) => {
+        // handle success
+        if (response.status === 200) {
+          console.log(response.data);
+          logout();
+        }
+      })
+      .catch((error) => {
+        // handle error
+        alert(error);
+        console.log(error);
+      })
+  };
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -70,10 +91,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {user.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {user.email}
           </Typography>
         </Box>
 
@@ -89,7 +110,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={logoutUser} sx={{m: 1}}>
           Logout
         </MenuItem>
       </Popover>

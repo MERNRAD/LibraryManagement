@@ -4,9 +4,12 @@ import {styled} from '@mui/material/styles';
 import {Container, Typography} from '@mui/material';
 // hooks
 // components
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
 import Logo from '../components/logo';
 // sections
 import {LoginForm} from '../sections/auth/login';
+import {useAuth} from "../useAuth";
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +32,33 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const {login} = useAuth();
+
+  // if (user) {
+  //   return <Navigate to="/" />;
+  // }
+
+  const loginUser = (email, password) => {
+    if (email === '' || password === '') {
+      alert("Please enter email and password");
+    } else {
+      axios.post(`http://localhost:8080/api/auth/login`, {email, password}, {withCredentials: false})
+        .then((response) => {
+          // handle success
+          if (response.status === 200) {
+            console.log(response.data);
+            login(response.data.user);
+          }
+        })
+        .catch((error) => {
+          // handle error
+          alert(error.response);
+          console.log(error);
+        })
+    }
+  };
+
 
   return (
     <>
@@ -54,7 +84,7 @@ export default function LoginPage() {
               Sign in
             </Typography>
 
-            <LoginForm/>
+            <LoginForm loginUser={loginUser}/>
 
           </StyledContent>
         </Container>
