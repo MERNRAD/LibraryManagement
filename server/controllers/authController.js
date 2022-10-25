@@ -25,39 +25,34 @@ const registerUser = async (req, res) => {
 }
 
 const loginUser = async (req, res, next) => {
-  // User.findOne({ email: req.body.email }, (err, user) => {
-  //   if(err) {
-  //     return res.status(400).json({ success: false, err });
-  //   }
-  //   if(!user) {
-  //     return res.status(403).json({ success: false, message: "User not found" });
-  //   }
-  //   if(!user.isValidPassword(req.body.password)) {
-  //     return res.status(403).json({ success: false, message: "Password incorrect" });
-  //   }
-  //   return res.status(200).json({
-  //     success: true,
-  //     user
-  //   });
-  // })
-
-  passport.authenticate("local", (err, user, info) => {
+  User.findOne({email: req.body.email}, (err, user) => {
     if (err) {
       return res.status(400).json({success: false, err});
     }
     if (!user) {
-      return res.status(403).json({success: false, message: info.message});
+      return res.status(403).json({success: false, message: "User not found"});
     }
-    req.logIn(user, (err) => {
+    if (!user.isValidPassword(req.body.password)) {
+      return res.status(403).json({success: false, message: "Password incorrect"});
+    }
+    passport.authenticate("local", (err, user, info) => {
       if (err) {
         return res.status(400).json({success: false, err});
       }
-      return res.status(200).json({
-        success: true,
-        user
+      if (!user) {
+        return res.status(403).json({success: false, message: info.message});
+      }
+      req.logIn(user, (err) => {
+        if (err) {
+          return res.status(400).json({success: false, err});
+        }
+        return res.status(200).json({
+          success: true,
+          user
+        });
       });
-    });
-  },)(req, res, next);
+    },)(req, res, next);
+  })
 }
 
 module.exports = {

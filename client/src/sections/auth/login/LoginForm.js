@@ -1,9 +1,10 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 // @mui
-import {Checkbox, IconButton, InputAdornment, Link, Stack, TextField, Typography} from '@mui/material';
+import {IconButton, InputAdornment, Link, Stack, TextField, Typography} from '@mui/material';
 import {LoadingButton} from '@mui/lab';
 // components
+import axios from "axios";
 import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
@@ -11,21 +12,46 @@ import Iconify from '../../../components/iconify';
 export default function LoginForm() {
   const navigate = useNavigate();
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    navigate('/dashboard', { replace: true });
+  const loginUser = () => {
+    if (email === '' || password === '') {
+      alert("Please enter email and password");
+    } else {
+      axios.post(`http://localhost:8080/api/auth/login`, {email, password}, {withCredentials: false})
+        .then((response) => {
+          // handle success
+          if (response.status === 200) {
+            navigate('/dashboard', {replace: true});
+          }
+          console.log(response.data);
+        })
+        .catch((error) => {
+          // handle error
+          alert(error.response.data.message);
+          console.log(error);
+        })
+    }
   };
 
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+        <TextField name="email" label="Email address" value={email} required onChange={
+          (event) => {
+            setEmail(event.target.value);
+          }
+        }/>
 
         <TextField
           name="password"
+          required
           label="Password"
+          value={password}
           type={showPassword ? 'text' : 'password'}
+          onChange={(event) => setPassword(event.target.value)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -38,19 +64,13 @@ export default function LoginForm() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{my: 2}}>
-        <Checkbox name="remember" label="Remember me"/>
-        <Link variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
-      </Stack>
-
-      <Typography variant="body2" sx={{mb: 5}}>
+      <Typography variant="body2" sx={{mb: 5, mt: 3}} textAlign="center"
+      >
         Don’t have an account? {''}
         <Link variant="subtitle2">Get started</Link>
       </Typography>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={loginUser}>
         Login
       </LoadingButton>
     </>

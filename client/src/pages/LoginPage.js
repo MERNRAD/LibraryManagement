@@ -47,10 +47,12 @@ export default function LoginPage() {
 
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" textAlign="center" gutterBottom>
-              Sign in to Library System
+            <Typography variant="h4" color="inherit" textAlign="center" gutterBottom paddingBottom={0}>
+              Library System
             </Typography>
-            <br/>
+            <Typography variant="h3" textAlign="center" gutterBottom paddingBottom={3}>
+              Sign in
+            </Typography>
 
             <LoginForm/>
 

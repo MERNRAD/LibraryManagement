@@ -71,7 +71,7 @@ const initializePassport = require("./passport-config");
 initializePassport(passport);
 
 // Implement routes for REST API
-app.use("/api/user", authRouter)
+app.use("/api/auth", authRouter)
 app.use("/api/book", bookRouter);
 app.use("/api/author", authorRouter);
 app.use("/api/borrowal", borrowalRouter);
