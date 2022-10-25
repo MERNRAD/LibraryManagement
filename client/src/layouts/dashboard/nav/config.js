@@ -23,7 +23,7 @@ const navConfig = [
   },
   {
     title: 'Genres',
-    path: '/dashboard/genres',
+    path: '/genres',
     icon: icon('ic_blog'),
   },
   {
