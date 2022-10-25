@@ -155,7 +155,7 @@ const BorrowalPage = () => {
   }
 
   const getSelectedBorrowalDetails = () => {
-    const selectedBorrowals = borrowal.find((element) => element._id === selectedBorrowalId)
+    const selectedBorrowals = borrowals.find((element) => element._id === selectedBorrowalId)
     setBorrowal(selectedBorrowals)
   }
 
