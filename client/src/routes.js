@@ -7,9 +7,11 @@ import AuthorPage from './pages/AuthorPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 
-import ProductsPage from './pages/ProductsPage';
 import GenrePage from './pages/GenrePage';
 import BorrowalsPage from './pages/BorrowalsPage';
+
+import BooksPage from './pages/BooksPage';
+import UserPage from './pages/UserPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 
 // ----------------------------------------------------------------------
@@ -23,6 +25,7 @@ export default function Router() {
         { element: <Navigate to="/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'authors', element: <AuthorPage /> },
+        { path: 'users', element: <UserPage /> },
         { path: 'books', element: <BooksPage /> },
         { path: 'blog', element: <BlogPage /> },
         { path: 'genres', element: <GenrePage /> },

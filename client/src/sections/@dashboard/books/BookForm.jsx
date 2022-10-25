@@ -60,7 +60,7 @@ const BookForm = ({
 
             <TextField name="name" label="Book name" value={book.name} autoFocus required
               onChange={(e) => setBook({ ...book, name: e.target.value })} />
-            <TextField name="isbn" label="ISBN" value={book.ISBN} autoFocus required
+            <TextField name="isbn" label="ISBN" value={book.isbn} autoFocus required
               onChange={(e) => setBook({ ...book, isbn: e.target.value })} />
 
             <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -68,9 +68,9 @@ const BookForm = ({
               <Select
                 labelId="author-label"
                 id="author"
-                value={book.author}
+                value={book.authorId}
                 label="Author"
-                onChange={(e) => setBook({ ...book, author: e.target.value })}>
+                onChange={(e) => setBook({ ...book, authorId: e.target.value })}>
 
 
                 <MenuItem value={10}>Ten</MenuItem>
