@@ -1,4 +1,20 @@
-import {Box, Button, Container, Modal, Stack, TextField, Typography} from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Modal,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  Stack,
+  TextField,
+  Typography,
+  Radio,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel
+} from "@mui/material";
 import PropTypes from "prop-types";
 import Iconify from "../../../components/iconify";
 
@@ -40,12 +56,41 @@ const BorrowalsForm = ({
           </Typography>
           <Stack spacing={3} paddingY={2}>
 
-            <TextField name="name" label="Borrowals name" value={borrowals.name} autoFocus required
-                       onChange={(e) => setBorrowals({...borrowals, name: e.target.value})}/>
-            <TextField name="description" label="Description" value={borrowals.description} multiline
-                       rows={2}
-                       maxRows={4}
-                       onChange={(e) => setBorrowals({...borrowals, description: e.target.value})}
+
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="member-label">Author</InputLabel>
+              <Select
+                labelId="member-label"
+                id="member"
+                value={borrowals.memberId}
+                label="Member"
+                onChange={(e) => setBorrowals({ ...borrowals, memberId: e.target.value })}>
+
+
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="borrowals-label">Genre</InputLabel>
+              <Select
+                labelId="borrowals-label"
+                id="borrowals"
+                value={borrowals.member}
+                label="Borrowals"
+                onChange={(e) => setBorrowals({ ...borrowals, borrowals: e.target.value })}>
+
+
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField name="borrowedDate" type="date" label="Borrowed Date" value={borrowals.borrowedDate} autoFocus required
+                       onChange={(e) => setBorrowals({...borrowals, borrowedDate: e.target.value})}/>
+            <TextField name="dueDate" type="date" label="Due Date" value={borrowals.dueDate} 
+                       onChange={(e) => setBorrowals({...borrowals, dueDate: e.target.value})}
             />
 
             <br/>

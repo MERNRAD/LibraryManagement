@@ -42,25 +42,10 @@ const UserForm = ({
 
             <TextField name="name" label="User name" value={user.name} autoFocus required
                        onChange={(e) => setUser({...user, name: e.target.value})}/>
-            <TextField name="description" label="Description" value={user.description} multiline
-                       rows={2}
-                       maxRows={4}
-                       onChange={(e) => setUser({...user, description: e.target.value})}
-            />
+            <TextField name="password" type="password" label="Password" value={user.password} required
 
-            <Button
-              size="large"
-              variant="outlined"
-              component="label"
-              color="info"
-            >
-              Upload photo
-              <input
-                type="file"
-                accept="image/jpeg, image/png"
-                hidden
-              />
-            </Button>
+                       onChange={(e) => setUser({...user, password: e.target.value})}
+            />
 
             <br/>
             <Box textAlign="center">

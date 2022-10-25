@@ -36,11 +36,10 @@ import {applySortFilter, getComparator} from "../utils/tableOperations";
 
 // ----------------------------------------------------------------------
 
-const TABLE_HEAD = [{id: 'photo', label: 'Photo', alignRight: false}, {
-  id: 'name',
-  label: 'Name',
-  alignRight: false
-}, {id: 'description', label: 'Description', alignRight: false}, {id: '', label: '', alignRight: false},];
+const TABLE_HEAD = [
+  {id: 'name', label: 'Name', alignRight: false}, 
+  {  id: 'password',  label: 'Password',  alignRight: false},  
+  {id: '', label: '', alignRight: false},];
 
 // ----------------------------------------------------------------------
 
@@ -106,8 +105,7 @@ const UserPage = () => {
   const addUser = () => {
     axios.post('http://localhost:8080/api/user/add', {
       "name": user.name,
-      "description": user.description,
-      "photoUrl": user.photoUrl
+      "password": user.password
     })
       .then((response) => {
         console.log(response.data);
@@ -124,8 +122,7 @@ const UserPage = () => {
   const updateUser = () => {
     axios.put(`http://localhost:8080/api/user/update/${selectedUserId}`, {
       "name": user.name,
-      "description": user.description,
-      "photoUrl": user.photoUrl
+      "password": user.password
     })
       .then((response) => {
         console.log(response.data);
@@ -236,22 +233,17 @@ const UserPage = () => {
                 onRequestSort={handleRequestSort}
               /><TableBody>
               {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                const {_id, name, description, photoUrl} = row;
+                const {_id, name, password} = row;
 
                 return (<TableRow hover key={_id} tabIndex={-1}>
-                  <TableCell align="center"><Stack direction="row"
-                                                   alignItems="center"
-                                                   spacing={4}>
-                    <Avatar alt={name} src={photoUrl}/>
-
-                  </Stack></TableCell>
+                 
 
                   <TableCell align="left"><Typography variant="subtitle2"
                                                       noWrap>
                     {name}
                   </Typography></TableCell>
 
-                  <TableCell align="left">{description}</TableCell>
+                  <TableCell align="left">{password}</TableCell>
 
                   <TableCell align="right">
                     <IconButton size="large" color="inherit" onClick={(e) => {

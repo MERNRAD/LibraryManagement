@@ -29,7 +29,7 @@ export default function Router() {
         { path: 'books', element: <BooksPage /> },
         { path: 'blog', element: <BlogPage /> },
         { path: 'genres', element: <GenrePage /> },
-        { path: 'borrowals', element: <BorrowalsPage /> },        
+        { path: 'borrowal', element: <BorrowalsPage /> },        
       ],
     },
     {

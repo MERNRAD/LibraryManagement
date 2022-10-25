@@ -1,8 +1,8 @@
-import {Helmet} from 'react-helmet-async';
-import {useEffect, useState} from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useEffect, useState } from 'react';
 
 // @mui
-import {Alert} from "@mui/lab";
+import { Alert } from "@mui/lab";
 import {
   Avatar,
   Button,
@@ -32,16 +32,16 @@ import Scrollbar from '../components/scrollbar';
 import BorrowalsTableHead from '../sections/@dashboard/borrowals/BorrowalsListHead'
 import BorrowalsForm from "../sections/@dashboard/borrowals/BorrowalsForm";
 import BorrowalsDialog from "../sections/@dashboard/borrowals/BorrowalsDialog";
-import {applySortFilter, getComparator} from "../utils/tableOperations";
+import { applySortFilter, getComparator } from "../utils/tableOperations";
 
 
 // ----------------------------------------------------------------------
 
-const TABLE_HEAD = [{id: 'photo', label: 'Photo', alignRight: false}, {
-  id: 'name',
-  label: 'Name',
-  alignRight: false
-}, {id: 'description', label: 'Description', alignRight: false}, {id: '', label: '', alignRight: false},];
+const TABLE_HEAD = [{ id: 'memberId', label: 'Name', alignRight: false },
+{ id: 'bookId', label: 'Book', alignRight: false },
+{ id: 'borrowedDate', label: 'Borrowed On', alignRight: false },
+{ id: 'dueDate', label: 'Due On', alignRight: false },
+{ id: '', label: '', alignRight: false },];
 
 // ----------------------------------------------------------------------
 
@@ -57,8 +57,10 @@ const BorrowalsPage = () => {
   // Data
   const [borrowals, setBorrowals] = useState({
     id: "",
-    name: "",
-    description: "",
+    bookid: "",
+    memberId: "", 
+    borrowedDate: "",
+    dueDate: "",
   })
   const [selectedBorrowalsId, setSelectedBorrowalsId] = useState(null)
   const [isTableLoading, setIsTableLoading] = useState(true)
@@ -75,12 +77,12 @@ const BorrowalsPage = () => {
   // API operations
 
   const getBorrowals = () => {
-    axios.get(`http://localhost:8080/api/borrowals/get${selectedBorrowalsId}`)
+    axios.get(`http://localhost:8080/api/borrowal/get${selectedBorrowalsId}`)
       .then((response) => {
         // handle success
         const borrowals = response.data.borrowals
         console.log(response.data.borrowals);
-        setBorrowals({id: borrowals._id, name: borrowals.name, description: borrowals.description})
+        setBorrowals({ id: borrowals._id, name: borrowals.name, description: borrowals.description })
       })
       .catch((error) => {
         // handle error
@@ -89,7 +91,7 @@ const BorrowalsPage = () => {
   }
 
   const getAllBorrowals = () => {
-    axios.get('http://localhost:8080/api/borrowals/getAll')
+    axios.get('http://localhost:8080/api/borrowal/getAll')
       .then((response) => {
         // handle success
         console.log(response.data)
@@ -103,7 +105,7 @@ const BorrowalsPage = () => {
   }
 
   const addBorrowals = () => {
-    axios.post('http://localhost:8080/api/borrowals/add', {
+    axios.post('http://localhost:8080/api/borrowal/add', {
       "name": borrowals.name,
       "description": borrowals.description,
       "photoUrl": borrowals.photoUrl
@@ -121,7 +123,7 @@ const BorrowalsPage = () => {
   }
 
   const updateBorrowals = () => {
-    axios.put(`http://localhost:8080/api/borrowals/update/${selectedBorrowalsId}`, {
+    axios.put(`http://localhost:8080/api/borrowal/update/${selectedBorrowalsId}`, {
       "name": borrowals.name,
       "description": borrowals.description,
       "photoUrl": borrowals.photoUrl
@@ -140,7 +142,7 @@ const BorrowalsPage = () => {
   }
 
   const deleteBorrowals = (borrowalsId) => {
-    axios.delete(`http://localhost:8080/api/borrowals/delete/${borrowalsId}`)
+    axios.delete(`http://localhost:8080/api/borrowal/delete/${borrowalsId}`)
       .then((response) => {
         handleCloseDialog();
         handleCloseMenu();
@@ -159,7 +161,7 @@ const BorrowalsPage = () => {
   }
 
   const clearForm = () => {
-    setBorrowals({id: "", name: "", description: ""})
+    setBorrowals({ id: "", name: "", description: "" })
   }
 
   // Handler functions
@@ -219,13 +221,13 @@ const BorrowalsPage = () => {
         <Button variant="contained" onClick={() => {
           setIsUpdateForm(false);
           handleOpenModal();
-        }} startIcon={<Iconify icon="eva:plus-fill"/>}>
+        }} startIcon={<Iconify icon="eva:plus-fill" />}>
           New Borrowals
         </Button>
       </Stack>
-      {isTableLoading ? <Grid style={{"textAlign": "center"}}><CircularProgress size="lg"/></Grid> : <Card>
+      {isTableLoading ? <Grid style={{ "textAlign": "center" }}><CircularProgress size="lg" /></Grid> : <Card>
         <Scrollbar>
-          {borrowals.length > 0 ? <TableContainer sx={{minWidth: 800}}>
+          {borrowals.length > 0 ? <TableContainer sx={{ minWidth: 800 }}>
             <Table>
               <BorrowalsTableHead
                 order={order}
@@ -234,35 +236,30 @@ const BorrowalsPage = () => {
                 rowCount={borrowals.length}
                 onRequestSort={handleRequestSort}
               /><TableBody>
-              {borrowals.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                const {_id, name, description, photoUrl} = row;
+                {borrowals.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  const { _id, memberId, bookId, borrowedDate, dueDate } = row;
 
-                return (<TableRow hover key={_id} tabIndex={-1}>
-                  <TableCell align="center"><Stack direction="row"
-                                                   alignItems="center"
-                                                   spacing={4}>
-                    <Avatar alt={name} src={photoUrl}/>
+                  return (<TableRow hover key={_id} tabIndex={-1}>
 
-                  </Stack></TableCell>
 
-                  <TableCell align="left"><Typography variant="subtitle2"
-                                                      noWrap>
-                    {name}
-                  </Typography></TableCell>
+                    <TableCell align="left"> {memberId} </TableCell>
 
-                  <TableCell align="left">{description}</TableCell>
+                    <TableCell align="left">{bookId}</TableCell>
+                    <TableCell align="left"> {borrowedDate} </TableCell>
 
-                  <TableCell align="right">
-                    <IconButton size="large" color="inherit" onClick={(e) => {
-                      setSelectedBorrowalsId(_id)
-                      handleOpenMenu(e)
-                    }}>
-                      <Iconify icon={'eva:more-vertical-fill'}/>
-                    </IconButton>
-                  </TableCell>
-                </TableRow>);
-              })}
-            </TableBody></Table>
+                    <TableCell align="left">{dueDate}</TableCell>
+
+                    <TableCell align="right">
+                      <IconButton size="large" color="inherit" onClick={(e) => {
+                        setSelectedBorrowalsId(_id)
+                        handleOpenMenu(e)
+                      }}>
+                        <Iconify icon={'eva:more-vertical-fill'} />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>);
+                })}
+              </TableBody></Table>
           </TableContainer> : <Alert severity="warning" color="warning">
             No borrowals found
           </Alert>}
@@ -283,8 +280,8 @@ const BorrowalsPage = () => {
       open={Boolean(isMenuOpen)}
       anchorEl={isMenuOpen}
       onClose={handleCloseMenu}
-      anchorOrigin={{vertical: 'top', horizontal: 'left'}}
-      transformOrigin={{vertical: 'top', horizontal: 'right'}}
+      anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       PaperProps={{
         sx: {
           p: 1, width: 140, '& .MuiMenuItem-root': {
@@ -299,22 +296,22 @@ const BorrowalsPage = () => {
         handleCloseMenu();
         handleOpenModal();
       }}>
-        <Iconify icon={'eva:edit-fill'} sx={{mr: 2}}/>
+        <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
         Edit
       </MenuItem>
 
-      <MenuItem sx={{color: 'error.main'}} onClick={handleOpenDialog}>
-        <Iconify icon={'eva:trash-2-outline'} sx={{mr: 2}}/>
+      <MenuItem sx={{ color: 'error.main' }} onClick={handleOpenDialog}>
+        <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
         Delete
       </MenuItem>
     </Popover>
 
     <BorrowalsForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
-                id={selectedBorrowalsId} borrowals={borrowals} setBorrowals={setBorrowals}
-                handleAddBorrowals={addBorrowals} handleUpdateBorrowals={updateBorrowals}/>
+      id={selectedBorrowalsId} borrowals={borrowals} setBorrowals={setBorrowals}
+      handleAddBorrowals={addBorrowals} handleUpdateBorrowals={updateBorrowals} />
 
     <BorrowalsDialog isDialogOpen={isDialogOpen} borrowalsId={selectedBorrowalsId} handleDeleteBorrowals={deleteBorrowals}
-                  handleCloseDialog={handleCloseDialog}/>
+      handleCloseDialog={handleCloseDialog} />
 
 
   </>);
