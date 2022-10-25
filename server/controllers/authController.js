@@ -55,7 +55,18 @@ const loginUser = async (req, res, next) => {
   })
 }
 
+const logoutUser = async (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    // res.redirect('/login');
+  });
+  return res.status(200).json({success: true, message: "User logged out"});
+}
+
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser
 }

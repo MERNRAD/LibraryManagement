@@ -1,40 +1,16 @@
 import {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
 // @mui
 import {IconButton, InputAdornment, Link, Stack, TextField, Typography} from '@mui/material';
 import {LoadingButton} from '@mui/lab';
 // components
-import axios from "axios";
 import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function LoginForm() {
-  const navigate = useNavigate();
-
+export default function LoginForm({loginUser}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
-  const loginUser = () => {
-    if (email === '' || password === '') {
-      alert("Please enter email and password");
-    } else {
-      axios.post(`http://localhost:8080/api/auth/login`, {email, password}, {withCredentials: false})
-        .then((response) => {
-          // handle success
-          if (response.status === 200) {
-            navigate('/dashboard', {replace: true});
-          }
-          console.log(response.data);
-        })
-        .catch((error) => {
-          // handle error
-          alert(error.response.data.message);
-          console.log(error);
-        })
-    }
-  };
 
   return (
     <>
@@ -70,7 +46,8 @@ export default function LoginForm() {
         <Link variant="subtitle2">Get started</Link>
       </Typography>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={loginUser}>
+      <LoadingButton fullWidth size="large" type="submit" variant="contained"
+                     onClick={() => loginUser(email, password)}>
         Login
       </LoadingButton>
     </>
