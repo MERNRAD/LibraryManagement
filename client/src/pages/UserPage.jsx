@@ -27,11 +27,10 @@ import {
 import axios from 'axios'
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-
 // sections
-import AuthorTableHead from '../sections/@dashboard/author/AuthorListHead'
-import AuthorForm from "../sections/@dashboard/author/AuthorForm";
-import AuthorDialog from "../sections/@dashboard/author/AuthorDialog";
+import UserTableHead from '../sections/@dashboard/user/UserListHead'
+import UserForm from "../sections/@dashboard/user/UserForm";
+import UserDialog from "../sections/@dashboard/user/UserDialog";
 import {applySortFilter, getComparator} from "../utils/tableOperations";
 
 
@@ -45,7 +44,7 @@ const TABLE_HEAD = [{id: 'photo', label: 'Photo', alignRight: false}, {
 
 // ----------------------------------------------------------------------
 
-const AuthorPage = () => {
+const UserPage = () => {
   // State variables
   // Table
   const [page, setPage] = useState(0);
@@ -55,14 +54,14 @@ const AuthorPage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // Data
-  const [author, setAuthor] = useState({
+  const [user, setUser] = useState({
     id: "",
     name: "",
     description: "",
     photoUrl: "https://www.pngitem.com/pimgs/m/645-6452863_profile-image-memoji-brown-hair-man-with-glasses.png"
   })
-  const [authors, setAuthors] = useState([]);
-  const [selectedAuthorId, setSelectedAuthorId] = useState(null)
+  const [users, setUsers] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState(null)
   const [isTableLoading, setIsTableLoading] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -71,18 +70,18 @@ const AuthorPage = () => {
 
   // Load data on initial page load
   useEffect(() => {
-    getAllAuthors();
+    getAllUsers();
   }, []);
 
   // API operations
 
-  const getAuthor = () => {
-    axios.get(`http://localhost:8080/api/author/get${selectedAuthorId}`)
+  const getUser = () => {
+    axios.get(`http://localhost:8080/api/user/get${selectedUserId}`)
       .then((response) => {
         // handle success
-        const author = response.data.author
-        console.log(response.data.author);
-        setAuthor({id: "", name: author.name, description: author.description})
+        const user = response.data.user
+        console.log(response.data.user);
+        setUser({id: "", name: user.name, description: user.description})
       })
       .catch((error) => {
         // handle error
@@ -90,12 +89,12 @@ const AuthorPage = () => {
       })
   }
 
-  const getAllAuthors = () => {
-    axios.get('http://localhost:8080/api/author/getAll')
+  const getAllUsers = () => {
+    axios.get('http://localhost:8080/api/user/getAll')
       .then((response) => {
         // handle success
         console.log(response.data)
-        setAuthors(response.data.authorsList)
+        setUsers(response.data.usersList)
         setIsTableLoading(false)
       })
       .catch((error) => {
@@ -104,16 +103,16 @@ const AuthorPage = () => {
       })
   }
 
-  const addAuthor = () => {
-    axios.post('http://localhost:8080/api/author/add', {
-      "name": author.name,
-      "description": author.description,
-      "photoUrl": author.photoUrl
+  const addUser = () => {
+    axios.post('http://localhost:8080/api/user/add', {
+      "name": user.name,
+      "description": user.description,
+      "photoUrl": user.photoUrl
     })
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
-        getAllAuthors();
+        getAllUsers();
         clearForm();
       })
       .catch((error) => {
@@ -122,17 +121,17 @@ const AuthorPage = () => {
       });
   }
 
-  const updateAuthor = () => {
-    axios.put(`http://localhost:8080/api/author/update/${selectedAuthorId}`, {
-      "name": author.name,
-      "description": author.description,
-      "photoUrl": author.photoUrl
+  const updateUser = () => {
+    axios.put(`http://localhost:8080/api/user/update/${selectedUserId}`, {
+      "name": user.name,
+      "description": user.description,
+      "photoUrl": user.photoUrl
     })
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
         handleCloseMenu();
-        getAllAuthors();
+        getAllUsers();
         clearForm();
       })
       .catch((error) => {
@@ -141,13 +140,13 @@ const AuthorPage = () => {
       });
   }
 
-  const deleteAuthor = (authorId) => {
-    axios.delete(`http://localhost:8080/api/author/delete/${authorId}`)
+  const deleteUser = (userId) => {
+    axios.delete(`http://localhost:8080/api/user/delete/${userId}`)
       .then((response) => {
         handleCloseDialog();
         handleCloseMenu();
         console.log(response.data);
-        getAllAuthors();
+        getAllUsers();
       })
       .catch((error) => {
         console.log(error);
@@ -155,13 +154,13 @@ const AuthorPage = () => {
       });
   }
 
-  const getSelectedAuthorDetails = () => {
-    const selectedAuthor = authors.find((element) => element._id === selectedAuthorId)
-    setAuthor(selectedAuthor)
+  const getSelectedUserDetails = () => {
+    const selectedUser = users.find((element) => element._id === selectedUserId)
+    setUser(selectedUser)
   }
 
   const clearForm = () => {
-    setAuthor({id: "", name: "", description: ""})
+    setUser({id: "", name: "", description: ""})
   }
 
   // Handler functions
@@ -187,7 +186,7 @@ const AuthorPage = () => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-    setAuthors(applySortFilter(authors, getComparator(order, orderBy), filterName));
+    setUsers(applySortFilter(users, getComparator(order, orderBy), filterName));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -209,34 +208,34 @@ const AuthorPage = () => {
 
   return (<>
     <Helmet>
-      <title>Authors</title>
+      <title>Users</title>
     </Helmet>
 
 
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h3" gutterBottom>
-          Authors
+          Users
         </Typography>
         <Button variant="contained" onClick={() => {
           setIsUpdateForm(false);
           handleOpenModal();
         }} startIcon={<Iconify icon="eva:plus-fill"/>}>
-          New Author
+          New User
         </Button>
       </Stack>
       {isTableLoading ? <Grid style={{"textAlign": "center"}}><CircularProgress size="lg"/></Grid> : <Card>
         <Scrollbar>
-          {authors.length > 0 ? <TableContainer sx={{minWidth: 800}}>
+          {users.length > 0 ? <TableContainer sx={{minWidth: 800}}>
             <Table>
-              <AuthorTableHead
+              <UserTableHead
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={authors.length}
+                rowCount={users.length}
                 onRequestSort={handleRequestSort}
               /><TableBody>
-              {authors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 const {_id, name, description, photoUrl} = row;
 
                 return (<TableRow hover key={_id} tabIndex={-1}>
@@ -256,7 +255,7 @@ const AuthorPage = () => {
 
                   <TableCell align="right">
                     <IconButton size="large" color="inherit" onClick={(e) => {
-                      setSelectedAuthorId(_id)
+                      setSelectedUserId(_id)
                       handleOpenMenu(e)
                     }}>
                       <Iconify icon={'eva:more-vertical-fill'}/>
@@ -266,13 +265,13 @@ const AuthorPage = () => {
               })}
             </TableBody></Table>
           </TableContainer> : <Alert severity="warning" color="warning">
-            No authors found
+            No users found
           </Alert>}
         </Scrollbar>
-        {authors.length > 0 && <TablePagination
+        {users.length > 0 && <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={authors.length}
+          count={users.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -297,7 +296,7 @@ const AuthorPage = () => {
     >
       <MenuItem onClick={() => {
         setIsUpdateForm(true);
-        getSelectedAuthorDetails();
+        getSelectedUserDetails();
         handleCloseMenu();
         handleOpenModal();
       }}>
@@ -311,15 +310,15 @@ const AuthorPage = () => {
       </MenuItem>
     </Popover>
 
-    <AuthorForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
-                id={selectedAuthorId} author={author} setAuthor={setAuthor}
-                handleAddAuthor={addAuthor} handleUpdateAuthor={updateAuthor}/>
+    <UserForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
+                id={selectedUserId} user={user} setUser={setUser}
+                handleAddUser={addUser} handleUpdateUser={updateUser}/>
 
-    <AuthorDialog isDialogOpen={isDialogOpen} authorId={selectedAuthorId} handleDeleteAuthor={deleteAuthor}
+    <UserDialog isDialogOpen={isDialogOpen} userId={selectedUserId} handleDeleteUser={deleteUser}
                   handleCloseDialog={handleCloseDialog}/>
 
 
   </>);
 }
 
-export default AuthorPage
+export default UserPage

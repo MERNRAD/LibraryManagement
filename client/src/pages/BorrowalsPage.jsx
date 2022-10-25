@@ -9,6 +9,7 @@ import {
   Card,
   CircularProgress,
   Container,
+  getBreadcrumbsUtilityClass,
   Grid,
   IconButton,
   MenuItem,
@@ -27,11 +28,10 @@ import {
 import axios from 'axios'
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-
 // sections
-import AuthorTableHead from '../sections/@dashboard/author/AuthorListHead'
-import AuthorForm from "../sections/@dashboard/author/AuthorForm";
-import AuthorDialog from "../sections/@dashboard/author/AuthorDialog";
+import BorrowalsTableHead from '../sections/@dashboard/borrowals/BorrowalsListHead'
+import BorrowalsForm from "../sections/@dashboard/borrowals/BorrowalsForm";
+import BorrowalsDialog from "../sections/@dashboard/borrowals/BorrowalsDialog";
 import {applySortFilter, getComparator} from "../utils/tableOperations";
 
 
@@ -45,7 +45,7 @@ const TABLE_HEAD = [{id: 'photo', label: 'Photo', alignRight: false}, {
 
 // ----------------------------------------------------------------------
 
-const AuthorPage = () => {
+const BorrowalsPage = () => {
   // State variables
   // Table
   const [page, setPage] = useState(0);
@@ -55,14 +55,12 @@ const AuthorPage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // Data
-  const [author, setAuthor] = useState({
+  const [borrowals, setBorrowals] = useState({
     id: "",
     name: "",
     description: "",
-    photoUrl: "https://www.pngitem.com/pimgs/m/645-6452863_profile-image-memoji-brown-hair-man-with-glasses.png"
   })
-  const [authors, setAuthors] = useState([]);
-  const [selectedAuthorId, setSelectedAuthorId] = useState(null)
+  const [selectedBorrowalsId, setSelectedBorrowalsId] = useState(null)
   const [isTableLoading, setIsTableLoading] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -71,18 +69,18 @@ const AuthorPage = () => {
 
   // Load data on initial page load
   useEffect(() => {
-    getAllAuthors();
+    getAllBorrowals();
   }, []);
 
   // API operations
 
-  const getAuthor = () => {
-    axios.get(`http://localhost:8080/api/author/get${selectedAuthorId}`)
+  const getBorrowals = () => {
+    axios.get(`http://localhost:8080/api/borrowals/get${selectedBorrowalsId}`)
       .then((response) => {
         // handle success
-        const author = response.data.author
-        console.log(response.data.author);
-        setAuthor({id: "", name: author.name, description: author.description})
+        const borrowals = response.data.borrowals
+        console.log(response.data.borrowals);
+        setBorrowals({id: borrowals._id, name: borrowals.name, description: borrowals.description})
       })
       .catch((error) => {
         // handle error
@@ -90,12 +88,12 @@ const AuthorPage = () => {
       })
   }
 
-  const getAllAuthors = () => {
-    axios.get('http://localhost:8080/api/author/getAll')
+  const getAllBorrowals = () => {
+    axios.get('http://localhost:8080/api/borrowals/getAll')
       .then((response) => {
         // handle success
         console.log(response.data)
-        setAuthors(response.data.authorsList)
+        setBorrowals(response.data.borrowalsList)
         setIsTableLoading(false)
       })
       .catch((error) => {
@@ -104,16 +102,16 @@ const AuthorPage = () => {
       })
   }
 
-  const addAuthor = () => {
-    axios.post('http://localhost:8080/api/author/add', {
-      "name": author.name,
-      "description": author.description,
-      "photoUrl": author.photoUrl
+  const addBorrowals = () => {
+    axios.post('http://localhost:8080/api/borrowals/add', {
+      "name": borrowals.name,
+      "description": borrowals.description,
+      "photoUrl": borrowals.photoUrl
     })
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
-        getAllAuthors();
+        getAllBorrowals();
         clearForm();
       })
       .catch((error) => {
@@ -122,17 +120,17 @@ const AuthorPage = () => {
       });
   }
 
-  const updateAuthor = () => {
-    axios.put(`http://localhost:8080/api/author/update/${selectedAuthorId}`, {
-      "name": author.name,
-      "description": author.description,
-      "photoUrl": author.photoUrl
+  const updateBorrowals = () => {
+    axios.put(`http://localhost:8080/api/borrowals/update/${selectedBorrowalsId}`, {
+      "name": borrowals.name,
+      "description": borrowals.description,
+      "photoUrl": borrowals.photoUrl
     })
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
         handleCloseMenu();
-        getAllAuthors();
+        getAllBorrowals();
         clearForm();
       })
       .catch((error) => {
@@ -141,13 +139,13 @@ const AuthorPage = () => {
       });
   }
 
-  const deleteAuthor = (authorId) => {
-    axios.delete(`http://localhost:8080/api/author/delete/${authorId}`)
+  const deleteBorrowals = (borrowalsId) => {
+    axios.delete(`http://localhost:8080/api/borrowals/delete/${borrowalsId}`)
       .then((response) => {
         handleCloseDialog();
         handleCloseMenu();
         console.log(response.data);
-        getAllAuthors();
+        getAllBorrowals();
       })
       .catch((error) => {
         console.log(error);
@@ -155,13 +153,13 @@ const AuthorPage = () => {
       });
   }
 
-  const getSelectedAuthorDetails = () => {
-    const selectedAuthor = authors.find((element) => element._id === selectedAuthorId)
-    setAuthor(selectedAuthor)
+  const getSelectedBorrowalsDetails = () => {
+    const selectedBorrowals = borrowals.find((element) => element._id === selectedBorrowalsId)
+    setBorrowals(selectedBorrowals)
   }
 
   const clearForm = () => {
-    setAuthor({id: "", name: "", description: ""})
+    setBorrowals({id: "", name: "", description: ""})
   }
 
   // Handler functions
@@ -187,7 +185,7 @@ const AuthorPage = () => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-    setAuthors(applySortFilter(authors, getComparator(order, orderBy), filterName));
+    setBorrowals(applySortFilter(borrowals, getComparator(order, orderBy), filterName));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -209,34 +207,34 @@ const AuthorPage = () => {
 
   return (<>
     <Helmet>
-      <title>Authors</title>
+      <title>Borrowals</title>
     </Helmet>
 
 
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h3" gutterBottom>
-          Authors
+          Borrowals
         </Typography>
         <Button variant="contained" onClick={() => {
           setIsUpdateForm(false);
           handleOpenModal();
         }} startIcon={<Iconify icon="eva:plus-fill"/>}>
-          New Author
+          New Borrowals
         </Button>
       </Stack>
       {isTableLoading ? <Grid style={{"textAlign": "center"}}><CircularProgress size="lg"/></Grid> : <Card>
         <Scrollbar>
-          {authors.length > 0 ? <TableContainer sx={{minWidth: 800}}>
+          {borrowals.length > 0 ? <TableContainer sx={{minWidth: 800}}>
             <Table>
-              <AuthorTableHead
+              <BorrowalsTableHead
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={authors.length}
+                rowCount={borrowals.length}
                 onRequestSort={handleRequestSort}
               /><TableBody>
-              {authors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              {borrowals.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 const {_id, name, description, photoUrl} = row;
 
                 return (<TableRow hover key={_id} tabIndex={-1}>
@@ -256,7 +254,7 @@ const AuthorPage = () => {
 
                   <TableCell align="right">
                     <IconButton size="large" color="inherit" onClick={(e) => {
-                      setSelectedAuthorId(_id)
+                      setSelectedBorrowalsId(_id)
                       handleOpenMenu(e)
                     }}>
                       <Iconify icon={'eva:more-vertical-fill'}/>
@@ -266,13 +264,13 @@ const AuthorPage = () => {
               })}
             </TableBody></Table>
           </TableContainer> : <Alert severity="warning" color="warning">
-            No authors found
+            No borrowals found
           </Alert>}
         </Scrollbar>
-        {authors.length > 0 && <TablePagination
+        {borrowals.length > 0 && <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={authors.length}
+          count={borrowals.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -297,7 +295,7 @@ const AuthorPage = () => {
     >
       <MenuItem onClick={() => {
         setIsUpdateForm(true);
-        getSelectedAuthorDetails();
+        getSelectedBorrowalsDetails();
         handleCloseMenu();
         handleOpenModal();
       }}>
@@ -311,15 +309,15 @@ const AuthorPage = () => {
       </MenuItem>
     </Popover>
 
-    <AuthorForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
-                id={selectedAuthorId} author={author} setAuthor={setAuthor}
-                handleAddAuthor={addAuthor} handleUpdateAuthor={updateAuthor}/>
+    <BorrowalsForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
+                id={selectedBorrowalsId} borrowals={borrowals} setBorrowals={setBorrowals}
+                handleAddBorrowals={addBorrowals} handleUpdateBorrowals={updateBorrowals}/>
 
-    <AuthorDialog isDialogOpen={isDialogOpen} authorId={selectedAuthorId} handleDeleteAuthor={deleteAuthor}
+    <BorrowalsDialog isDialogOpen={isDialogOpen} borrowalsId={selectedBorrowalsId} handleDeleteBorrowals={deleteBorrowals}
                   handleCloseDialog={handleCloseDialog}/>
 
 
   </>);
 }
 
-export default AuthorPage
+export default BorrowalsPage
