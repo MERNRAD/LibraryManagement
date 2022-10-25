@@ -8,6 +8,8 @@ import AuthorPage from './pages/AuthorPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
+import GenrePage from './pages/GenrePage';
+import BorrowalsPage from './pages/BorrowalsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 
 // ----------------------------------------------------------------------
@@ -23,6 +25,8 @@ export default function Router() {
         { path: 'authors', element: <AuthorPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
+        { path: 'genres', element: <GenrePage /> },
+        { path: 'borrowals', element: <BorrowalsPage /> },        
       ],
     },
     {

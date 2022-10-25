@@ -16,7 +16,8 @@ const PORT = process.env.PORT || 8080
 const bookRouter = require("./routes/bookRouter")
 const authorRouter = require("./routes/authorRouter")
 const borrowalRouter = require("./routes/borrowalRouter")
-const genreRouter = require("./routes/bookRouter")
+const genreRouter = require("./routes/genreRouter")
+//const borrowalsRouter = require("./routes/borrowalsRouter")
 const reviewRouter = require("./routes/reviewRouter")
 const memberRouter = require("./routes/memberRouter")
 
@@ -45,6 +46,7 @@ app.use("/api/book", bookRouter);
 app.use("/api/author", authorRouter);
 app.use("/api/borrowal", borrowalRouter);
 app.use("/api/genre", genreRouter);
+//app.use("/api/borrowals", borrowalsRouter);
 app.use("/api/review", reviewRouter);
 app.use("/api/member", memberRouter);
 
