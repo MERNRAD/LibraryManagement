@@ -3,7 +3,7 @@ import {Navigate, useRoutes} from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 //
 import BlogPage from './pages/BlogPage';
-import UserPage from './pages/UserPage';
+import AuthorPage from './pages/AuthorPage';
 import LoginPage from './pages/LoginPage';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
@@ -13,12 +13,12 @@ import DashboardAppPage from './pages/DashboardAppPage';
 export default function Router() {
   const routes = useRoutes([
     {
-      path: '/dashboard',
+      path: '/',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
+        { element: <Navigate to="/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
+        { path: 'authors', element: <AuthorPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],

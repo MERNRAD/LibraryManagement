@@ -19,6 +19,6 @@ router.post("/add", (req, res) => addBorrowal(req, res))
 
 router.put("/update/:id", (req, res) => updateBorrowal(req, res))
 
-router.put("/delete/:id", (req, res) => deleteBorrowal(req, res))
+router.delete("/delete/:id", (req, res) => deleteBorrowal(req, res))
 
 module.exports = router;
