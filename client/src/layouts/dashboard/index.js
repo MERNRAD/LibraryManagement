@@ -1,1 +1,1 @@
-export { default } from './DashboardLayout';
+export {default} from './LibraryApp';
