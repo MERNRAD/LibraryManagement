@@ -1956,7 +1956,11 @@
     "deepmerge" "^4.2.2"
     "svgo" "^2.8.0"
 
+<<<<<<< Updated upstream
 "@svgr/webpack@^5.5.0", "@svgr/webpack@^6.5.0":
+=======
+"@svgr/webpack@^6.5.0":
+>>>>>>> Stashed changes
   "integrity" "sha512-rM/Z4pwMhqvAXEHoHIlE4SeTb0ToQNmJuBdiHwhP2ZtywyX6XqrgCv2WX7K/UCgNYJgYbekuylgyjnuLUHTcZQ=="
   "resolved" "https://registry.npmjs.org/@svgr/webpack/-/webpack-6.5.0.tgz"
   "version" "6.5.0"

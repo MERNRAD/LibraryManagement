@@ -5,9 +5,31 @@ import PropTypes from 'prop-types';
 
 
 // @mui
+<<<<<<< Updated upstream:client/src/pages/BooksPage.jsx
 import { Box, Card, Button, IconButton, Link, Popover, MenuItem, Container, Stack, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+=======
+import {
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Container,
+  Grid,
+  IconButton,
+  MenuItem,
+  Popover,
+  Stack,
+  Typography
+} from '@mui/material';
+import {styled} from '@mui/material/styles';
+
+import toast  from 'react-hot-toast';
+
+
+import {Alert} from "@mui/lab";
+>>>>>>> Stashed changes:client/src/pages/BookPage.jsx
 import Iconify from '../components/iconify';
 import Label from '../components/label';
 
@@ -97,7 +119,7 @@ const BookPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 
@@ -120,7 +142,7 @@ const BookPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 
@@ -134,7 +156,7 @@ const BookPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 

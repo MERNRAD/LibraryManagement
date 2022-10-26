@@ -114,8 +114,17 @@ const UserPage = () => {
         clearForm();
       })
       .catch((error) => {
+<<<<<<< Updated upstream
         console.log(error);
         alert("Something went wrong, please try again")
+=======
+        if (error.response.status === 403) {
+          toast.error("User already exists")
+        } else {
+          console.log(error);
+          toast.error("Something went wrong, please try again")
+        }
+>>>>>>> Stashed changes
       });
   }
 
@@ -133,7 +142,7 @@ const UserPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 
@@ -147,7 +156,7 @@ const UserPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 
