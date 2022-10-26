@@ -1,6 +1,6 @@
 import {useState} from 'react';
 // @mui
-import {IconButton, InputAdornment, Link, Stack, TextField, Typography} from '@mui/material';
+import {IconButton, InputAdornment, Stack, TextField} from '@mui/material';
 import {LoadingButton} from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
@@ -40,11 +40,11 @@ export default function LoginForm({loginUser}) {
         />
       </Stack>
 
-      <Typography variant="body2" sx={{mb: 5, mt: 3}} textAlign="center"
-      >
-        Don’t have an account? {''}
-        <Link variant="subtitle2">Get started</Link>
-      </Typography>
+      {/* <Typography variant="body2" sx={{mb: 5, mt: 3}} textAlign="center" */}
+      {/* > */}
+      {/*  Don’t have an account? {''} */}
+      {/*  <Link variant="subtitle2">Get started</Link> */}
+      {/* </Typography> */}
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained"
                      onClick={() => loginUser(email, password)}>
