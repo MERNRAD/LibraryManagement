@@ -1,7 +1,7 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import PropTypes from "prop-types";
 
-const BorrowalsDialog = ({isDialogOpen, handleCloseDialog, borrowalsId, handleDeleteBorrowals}) => {
+const BorrowalDialog = ({isDialogOpen, handleCloseDialog, borrowalId, handleDeleteBorrowal}) => {
   return (
     <Dialog
       open={isDialogOpen}
@@ -14,12 +14,12 @@ const BorrowalsDialog = ({isDialogOpen, handleCloseDialog, borrowalsId, handleDe
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Are you sure you want to delete this borrowals?
+          Are you sure you want to delete this borrowal?
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCloseDialog}>No</Button>
-        <Button onClick={() => handleDeleteBorrowals(borrowalsId)} autoFocus>
+        <Button onClick={() => handleDeleteBorrowal(borrowalId)} autoFocus>
           Yes
         </Button>
       </DialogActions>
@@ -27,11 +27,11 @@ const BorrowalsDialog = ({isDialogOpen, handleCloseDialog, borrowalsId, handleDe
   )
 }
 
-BorrowalsDialog.propTypes = {
+BorrowalDialog.propTypes = {
   isDialogOpen: PropTypes.bool,
   handleCloseDialog: PropTypes.func,
-  borrowalsId: PropTypes.string,
-  handleDeleteBorrowals: PropTypes.func
+  borrowalId: PropTypes.string,
+  handleDeleteBorrowal: PropTypes.func
 };
 
-export default BorrowalsDialog
+export default BorrowalDialog

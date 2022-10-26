@@ -16,19 +16,19 @@ const visuallyHidden = {
   clip: 'rect(0 0 0 0)',
 };
 
-BorrowalsListHead.propTypes = {
+BorrowalListHead.propTypes = {
   order: PropTypes.oneOf(['asc', 'desc']),
   orderBy: PropTypes.string,
   headLabel: PropTypes.array,
   onRequestSort: PropTypes.func,
 };
 
-export default function BorrowalsListHead({
-                                         order,
-                                         orderBy,
-                                         headLabel,
-                                         onRequestSort,
-                                       }) {
+export default function BorrowalListHead({
+                                           order,
+                                           orderBy,
+                                           headLabel,
+                                           onRequestSort,
+                                         }) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
