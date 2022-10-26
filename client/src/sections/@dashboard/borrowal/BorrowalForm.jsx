@@ -19,13 +19,13 @@ import {useEffect, useState} from "react";
 import Iconify from "../../../components/iconify";
 
 const BorrowalForm = ({
+                        handleAddBorrowal,
+                        handleUpdateBorrowal,
                         isUpdateForm,
                         isModalOpen,
                         handleCloseModal,
                         borrowal,
                         setBorrowal,
-                        handleAddBorrowal,
-                        handleUpdateBorrowal
                       }) => {
 
   const [isModalLoading, setIsModalLoading] = useState(true)
@@ -103,7 +103,7 @@ const BorrowalForm = ({
                     required
                     labelId="member-label"
                     id="member"
-                    // defaultValue={borrowal.memberId}
+                    value={borrowal.memberId}
                     label="Member"
                     onChange={(e) => setBorrowal({...borrowal, memberId: e.target.value})}>
                     {
@@ -120,12 +120,14 @@ const BorrowalForm = ({
                     required
                     labelId="book-label"
                     id="book"
-                    // defaultValue={borrowal.bookId}
+                    value={borrowal.bookId}
                     label="Book"
                     onChange={(e) => setBorrowal({...borrowal, bookId: e.target.value})}>
                     {
-                      books.map((book) => <MenuItem key={book._id}
-                                                    value={book._id}>{book.name}</MenuItem>)
+                      books.filter((book) => {
+                        return book.isAvailable
+                      }).map((book) => <MenuItem key={book._id}
+                                                 value={book._id}>{book.name}</MenuItem>)
                     }
                   </Select>
                 </FormControl>
@@ -152,15 +154,18 @@ const BorrowalForm = ({
 
             <br/>
             <Box textAlign="center">
-              <Button size="large" variant="contained" onClick={isUpdateForm ? handleUpdateBorrowal : handleAddBorrowal}
-                      startIcon={<Iconify icon="bi:check-lg"/>} style={{marginRight: "12px"}}>
-                Submit
-              </Button>
+              <Box textAlign="center" paddingBottom={2}>
+                <Button size="large" variant="contained"
+                        onClick={isUpdateForm ? handleUpdateBorrowal : handleAddBorrowal}
+                        startIcon={<Iconify icon="bi:check-lg"/>} style={{marginRight: "12px"}}>
+                  Submit
+                </Button>
 
-              <Button size="large" color="inherit" variant="contained" onClick={handleCloseModal}
-                      startIcon={<Iconify icon="charm:cross"/>} style={{marginLeft: "12px"}}>
-                Cancel
-              </Button>
+                <Button size="large" color="inherit" variant="contained" onClick={handleCloseModal}
+                        startIcon={<Iconify icon="charm:cross"/>} style={{marginLeft: "12px"}}>
+                  Cancel
+                </Button>
+              </Box>
             </Box>
           </Stack>
         </Container>

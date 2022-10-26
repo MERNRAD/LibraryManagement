@@ -27,17 +27,18 @@ import BorrowalListHead from '../sections/@dashboard/borrowal/BorrowalListHead'
 import BorrowalForm from "../sections/@dashboard/borrowal/BorrowalForm";
 import BorrowalsDialog from "../sections/@dashboard/borrowal/BorrowalDialog";
 import {applySortFilter, getComparator} from "../utils/tableOperations";
+import Label from "../components/label";
 
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [{id: 'memberName', label: 'Member Name', alignRight: false},
   {id: 'bookName', label: 'Book Name', alignRight: false},
-  {id: 'isbn', label: 'ISBN', alignRight: false},
   {id: 'borrowedDate', label: 'Borrowed On', alignRight: false},
   {id: 'dueDate', label: 'Due On', alignRight: false},
   {id: 'status', label: 'Status', alignRight: false},
-  {id: '', label: '', alignRight: false},];
+  {id: '', label: '', alignRight: false}, {id: '', label: '', alignRight: false}];
+
 
 // ----------------------------------------------------------------------
 
@@ -54,10 +55,11 @@ const BorrowalPage = () => {
   const [borrowal, setBorrowal] = useState({
     bookId: "",
     memberId: "",
-    borrowedDate: null,
-    dueDate: null,
+    borrowedDate: "",
+    dueDate: "",
     status: ""
   })
+  const [borrowals, setBorrowals] = useState([]);
   const [selectedBorrowalId, setSelectedBorrowalId] = useState(null)
   const [isTableLoading, setIsTableLoading] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(null);
@@ -70,15 +72,13 @@ const BorrowalPage = () => {
     getAllBorrowals();
   }, []);
 
-  // API operations
-
+  // API operations=
   const getBorrowals = () => {
     axios.get(`http://localhost:8080/api/borrowal/get${selectedBorrowalId}`)
       .then((response) => {
         // handle success
-        const borrowal = response.data.borrowal
-        console.log(response.data.borrowal);
-        setBorrowal(borrowal)
+        console.log(response.data);
+        setBorrowals(response.data.borrowalsList)
       })
       .catch((error) => {
         // handle error
@@ -91,7 +91,7 @@ const BorrowalPage = () => {
       .then((response) => {
         // handle success
         console.log(response.data)
-        setBorrowal(response.data.borrowalsList)
+        setBorrowals(response.data.borrowalsList)
         setIsTableLoading(false)
       })
       .catch((error) => {
@@ -101,7 +101,6 @@ const BorrowalPage = () => {
   }
 
   const addBorrowal = () => {
-    alert("add")
     axios.post('http://localhost:8080/api/borrowal/add', borrowal)
       .then((response) => {
         console.log(response.data);
@@ -130,8 +129,8 @@ const BorrowalPage = () => {
       });
   }
 
-  const deleteBorrowal = (borrowalsId) => {
-    axios.delete(`http://localhost:8080/api/borrowal/delete/${borrowalsId}`)
+  const deleteBorrowal = () => {
+    axios.delete(`http://localhost:8080/api/borrowal/delete/${selectedBorrowalId}`)
       .then((response) => {
         handleCloseDialog();
         handleCloseMenu();
@@ -153,8 +152,8 @@ const BorrowalPage = () => {
     setBorrowal({
       bookId: "",
       memberId: "",
-      borrowedDate: null,
-      dueDate: null,
+      borrowedDate: "",
+      dueDate: "",
       status: ""
     })
   }
@@ -222,7 +221,7 @@ const BorrowalPage = () => {
       </Stack>
       {isTableLoading ? <Grid style={{"textAlign": "center"}}><CircularProgress size="lg"/></Grid> : <Card>
         <Scrollbar>
-          {borrowal.length > 0 ? <TableContainer sx={{minWidth: 800}}>
+          {borrowals.length > 0 ? <TableContainer sx={{minWidth: 800}}>
             <Table>
               <BorrowalListHead
                 order={order}
@@ -231,22 +230,26 @@ const BorrowalPage = () => {
                 rowCount={borrowal.length}
                 onRequestSort={handleRequestSort}
               /><TableBody>
-              {borrowal.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                const {_id, memberId, bookId, borrowedDate, dueDate} = row;
-
-                return (<TableRow hover key={_id} tabIndex={-1}>
+              {borrowals.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((borrowal) => {
+                return (<TableRow hover key={borrowal._id} tabIndex={-1}>
 
 
-                  <TableCell align="left"> {memberId} </TableCell>
+                  <TableCell align="left"> {borrowal.member.name} </TableCell>
 
-                  <TableCell align="left">{bookId}</TableCell>
-                  <TableCell align="left"> {borrowedDate} </TableCell>
+                  <TableCell align="left">{borrowal.book.name}</TableCell>
+                  <TableCell align="left"> {(new Date(borrowal.borrowedDate)).toLocaleDateString("en-US")} </TableCell>
 
-                  <TableCell align="left">{dueDate}</TableCell>
+                  <TableCell align="left">{(new Date(borrowal.dueDate)).toLocaleDateString("en-US")}</TableCell>
+
+                  <TableCell align="left">{borrowal.status}</TableCell>
+
+                  <TableCell align="left">
+                    {(new Date(borrowal.dueDate) < new Date()) &&
+                      <Label color="error" sx={{padding: 2}}>Overdue</Label>}</TableCell>
 
                   <TableCell align="right">
                     <IconButton size="large" color="inherit" onClick={(e) => {
-                      setSelectedBorrowalId(_id)
+                      setSelectedBorrowalId(borrowal._id)
                       handleOpenMenu(e)
                     }}>
                       <Iconify icon={'eva:more-vertical-fill'}/>
@@ -303,10 +306,10 @@ const BorrowalPage = () => {
 
     <BorrowalForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
                   id={selectedBorrowalId} borrowal={borrowal} setBorrowal={setBorrowal}
-                  handleAddBorrowals={addBorrowal} handleUpdateBorrowals={updateBorrowal}/>
+                  handleAddBorrowal={addBorrowal} handleUpdateBorrowal={updateBorrowal}/>
 
     <BorrowalsDialog isDialogOpen={isDialogOpen} borrowalsId={selectedBorrowalId}
-                     handleDeleteBorrowals={deleteBorrowal}
+                     handleDeleteBorrowal={deleteBorrowal}
                      handleCloseDialog={handleCloseDialog}/>
 
 

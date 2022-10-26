@@ -1,9 +1,6 @@
 import {Helmet} from 'react-helmet-async';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
-
-
-// @mui
 import {
   Box,
   Button,
@@ -60,7 +57,7 @@ const BookPage = () => {
         // handle success
         const book = response.data.book
         console.log(response.data.book);
-        setBook({id: "", name: book.name, description: book.description})
+        setBook(book)
       })
       .catch((error) => {
         // handle error
