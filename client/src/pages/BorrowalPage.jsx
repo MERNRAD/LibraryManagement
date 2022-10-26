@@ -111,6 +111,7 @@ const BorrowalPage = () => {
   const addBorrowal = () => {
     axios.post('http://localhost:8080/api/borrowal/add', borrowal)
       .then((response) => {
+        toast.success("Borrowal added");
         console.log(response.data);
         handleCloseModal();
         getAllBorrowals();
@@ -125,6 +126,7 @@ const BorrowalPage = () => {
   const updateBorrowal = () => {
     axios.put(`http://localhost:8080/api/borrowal/update/${selectedBorrowalId}`, borrowal)
       .then((response) => {
+        toast.success("Borrowal updated");
         console.log(response.data);
         handleCloseModal();
         handleCloseMenu();
@@ -140,6 +142,7 @@ const BorrowalPage = () => {
   const deleteBorrowal = () => {
     axios.delete(`http://localhost:8080/api/borrowal/delete/${selectedBorrowalId}`)
       .then((response) => {
+        toast.success("Borrowal deleted");
         handleCloseDialog();
         handleCloseMenu();
         console.log(response.data);

@@ -109,6 +109,7 @@ const GenrePage = () => {
     axios.post('http://localhost:8080/api/genre/add', genre)
       .then((response) => {
         console.log(response.data);
+        toast.success("Genre added");
         handleCloseModal();
         getAllGenres();
         clearForm();
@@ -123,6 +124,7 @@ const GenrePage = () => {
     axios.put(`http://localhost:8080/api/genre/update/${selectedGenreId}`, genre)
       .then((response) => {
         console.log(response.data);
+        toast.success("Genre updated");
         handleCloseModal();
         handleCloseMenu();
         getAllGenres();
@@ -137,6 +139,7 @@ const GenrePage = () => {
   const deleteGenre = (genreId) => {
     axios.delete(`http://localhost:8080/api/genre/delete/${genreId}`)
       .then((response) => {
+        toast.success("Genre deleted");
         handleCloseDialog();
         handleCloseMenu();
         console.log(response.data);

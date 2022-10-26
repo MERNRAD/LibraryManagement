@@ -115,6 +115,7 @@ const UserPage = () => {
     axios.post('http://localhost:8080/api/user/add', user)
       .then((response) => {
         console.log(response.data);
+        toast.success("User added");
         handleCloseModal();
         getAllUsers();
         clearForm();
@@ -133,6 +134,7 @@ const UserPage = () => {
     axios.put(`http://localhost:8080/api/user/update/${selectedUserId}`, user)
       .then((response) => {
         console.log(response.data);
+        toast.success("User updated");
         handleCloseModal();
         handleCloseMenu();
         getAllUsers();
@@ -147,6 +149,7 @@ const UserPage = () => {
   const deleteUser = (userId) => {
     axios.delete(`http://localhost:8080/api/user/delete/${userId}`)
       .then((response) => {
+        toast.success("User deleted");
         handleCloseDialog();
         handleCloseMenu();
         console.log(response.data);

@@ -85,6 +85,7 @@ const BookPage = () => {
   const addBook = () => {
     axios.post('http://localhost:8080/api/book/add', book)
       .then((response) => {
+        toast.success("Book added");
         console.log(response.data);
         handleCloseModal();
         getAllBooks();
@@ -99,6 +100,7 @@ const BookPage = () => {
   const updateBook = () => {
     axios.put(`http://localhost:8080/api/book/update/${selectedBookId}`, book)
       .then((response) => {
+        toast.success("Book updated");
         console.log(response.data);
         handleCloseModal();
         handleCloseMenu();
@@ -114,6 +116,7 @@ const BookPage = () => {
   const deleteBook = (bookId) => {
     axios.delete(`http://localhost:8080/api/book/delete/${bookId}`)
       .then((response) => {
+        toast.success("Book deleted");
         handleCloseDialog();
         handleCloseMenu();
         console.log(response.data);

@@ -107,6 +107,7 @@ const AuthorPage = () => {
   const addAuthor = () => {
     axios.post('http://localhost:8080/api/author/add', author)
       .then((response) => {
+        toast.success("Author added");
         console.log(response.data);
         handleCloseModal();
         getAllAuthors();
@@ -121,6 +122,7 @@ const AuthorPage = () => {
   const updateAuthor = () => {
     axios.put(`http://localhost:8080/api/author/update/${selectedAuthorId}`, author)
       .then((response) => {
+        toast.success("Author updated");
         console.log(response.data);
         handleCloseModal();
         handleCloseMenu();
@@ -136,6 +138,7 @@ const AuthorPage = () => {
   const deleteAuthor = (authorId) => {
     axios.delete(`http://localhost:8080/api/author/delete/${authorId}`)
       .then((response) => {
+        toast.success("Author deleted");
         handleCloseDialog();
         handleCloseMenu();
         console.log(response.data);
