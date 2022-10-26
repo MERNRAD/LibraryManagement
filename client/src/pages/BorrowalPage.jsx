@@ -273,10 +273,10 @@ const BorrowalPage = () => {
             No borrowals found
           </Alert>}
         </Scrollbar>
-        {borrowal.length > 0 && <TablePagination
+        {borrowals.length > 0 && <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={borrowal.length}
+          count={borrowals.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
