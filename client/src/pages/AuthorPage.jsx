@@ -31,6 +31,7 @@ import AuthorTableHead from '../sections/@dashboard/author/AuthorListHead'
 import AuthorForm from "../sections/@dashboard/author/AuthorForm";
 import AuthorDialog from "../sections/@dashboard/author/AuthorDialog";
 import {applySortFilter, getComparator} from "../utils/tableOperations";
+import {useAuth} from "../useAuth";
 
 
 // ----------------------------------------------------------------------
@@ -44,6 +45,7 @@ const TABLE_HEAD = [{id: 'photo', label: 'Photo', alignRight: false}, {
 // ----------------------------------------------------------------------
 
 const AuthorPage = () => {
+  const {user} = useAuth();
   // State variables
   // Table
   const [page, setPage] = useState(0);
@@ -208,12 +210,12 @@ const AuthorPage = () => {
         <Typography variant="h3" gutterBottom>
           Authors
         </Typography>
-        <Button variant="contained" onClick={() => {
+        {user.isAdmin && <Button variant="contained" onClick={() => {
           setIsUpdateForm(false);
           handleOpenModal();
         }} startIcon={<Iconify icon="eva:plus-fill"/>}>
           New Author
-        </Button>
+        </Button>}
       </Stack>
       {isTableLoading ? <Grid padding={2} style={{"textAlign": "center"}}><CircularProgress/></Grid> : <Card>
         <Scrollbar>
@@ -243,14 +245,15 @@ const AuthorPage = () => {
                   </Typography></TableCell>
 
                   <TableCell align="left">{description}</TableCell>
-
                   <TableCell align="right">
-                    <IconButton size="large" color="inherit" onClick={(e) => {
-                      setSelectedAuthorId(_id)
-                      handleOpenMenu(e)
-                    }}>
-                      <Iconify icon={'eva:more-vertical-fill'}/>
-                    </IconButton>
+                    {user.isAdmin &&
+                      <IconButton size="large" color="inherit" onClick={(e) => {
+                        setSelectedAuthorId(_id)
+                        handleOpenMenu(e)
+                      }}>
+                        <Iconify icon={'eva:more-vertical-fill'}/>
+                      </IconButton>
+                    }
                   </TableCell>
                 </TableRow>);
               })}

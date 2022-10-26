@@ -17,6 +17,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import {useEffect, useState} from "react";
 import Iconify from "../../../components/iconify";
+import {useAuth} from "../../../useAuth";
 
 const BorrowalForm = ({
                         handleAddBorrowal,
@@ -27,7 +28,7 @@ const BorrowalForm = ({
                         borrowal,
                         setBorrowal,
                       }) => {
-
+  const {user} = useAuth();
   const [isModalLoading, setIsModalLoading] = useState(true)
   const [members, setMembers] = useState([]);
   const [books, setBooks] = useState([]);
@@ -37,7 +38,12 @@ const BorrowalForm = ({
       .then((response) => {
         // handle success
         console.log(response.data)
-        setMembers(response.data.membersList)
+        if (user.isAdmin) {
+          setMembers(response.data.membersList)
+        } else {
+          setMembers(response.data.membersList.filter((member) => user._id === member._id))
+        }
+        setBorrowal({...borrowal, memberId: user._id})
       })
       .catch((error) => {
         // handle error
@@ -101,6 +107,7 @@ const BorrowalForm = ({
                   <InputLabel id="member-label">Member</InputLabel>
                   <Select
                     required
+                    disabled={!user.isAdmin}
                     labelId="member-label"
                     id="member"
                     value={borrowal.memberId}

@@ -33,6 +33,7 @@ import GenreTableHead from '../sections/@dashboard/genre/GenreListHead'
 import GenreForm from "../sections/@dashboard/genre/GenreForm";
 import GenreDialog from "../sections/@dashboard/genre/GenreDialog";
 import {applySortFilter, getComparator} from "../utils/tableOperations";
+import {useAuth} from "../useAuth";
 
 
 // ----------------------------------------------------------------------
@@ -46,6 +47,7 @@ const TABLE_HEAD = [{
 // ----------------------------------------------------------------------
 
 const GenrePage = () => {
+  const {user} = useAuth();
   // State variables
   // Table
   const [page, setPage] = useState(0);
@@ -209,12 +211,12 @@ const GenrePage = () => {
         <Typography variant="h3" gutterBottom>
           Genres
         </Typography>
-        <Button variant="contained" onClick={() => {
+        {user.isAdmin && <Button variant="contained" onClick={() => {
           setIsUpdateForm(false);
           handleOpenModal();
         }} startIcon={<Iconify icon="eva:plus-fill"/>}>
           New Genre
-        </Button>
+        </Button>}
       </Stack>
       {isTableLoading ? <Grid style={{"textAlign": "center"}}><CircularProgress size="lg"/></Grid> : <Card>
         <Scrollbar>
@@ -240,12 +242,12 @@ const GenrePage = () => {
                   <TableCell align="left">{description}</TableCell>
 
                   <TableCell align="right">
-                    <IconButton size="large" color="inherit" onClick={(e) => {
+                    {user.isAdmin && <IconButton size="large" color="inherit" onClick={(e) => {
                       setSelectedGenreId(_id)
                       handleOpenMenu(e)
                     }}>
                       <Iconify icon={'eva:more-vertical-fill'}/>
-                    </IconButton>
+                    </IconButton>}
                   </TableCell>
                 </TableRow>);
               })}

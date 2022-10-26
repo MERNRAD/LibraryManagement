@@ -70,6 +70,7 @@ const addUser = async (req, res) => {
 const updateUser = async (req, res) => {
     const userId = req.params.id
     const updatedUser = req.body
+    updatedUser.setPassword(req.body.password);
 
     User.findByIdAndUpdate(userId,updatedUser, (err, user) => {
         if (err) {

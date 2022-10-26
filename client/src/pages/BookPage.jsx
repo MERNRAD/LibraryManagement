@@ -26,6 +26,7 @@ import Label from '../components/label';
 import BookDialog from "../sections/@dashboard/book/BookDialog";
 
 import BookForm from "../sections/@dashboard/book/BookForm";
+import {useAuth} from "../useAuth";
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +39,7 @@ const StyledProductImg = styled('img')({
 });
 
 const BookPage = () => {
-
+  const {user} = useAuth();
   // Data
   const [book, setBook] = useState({
     id: "", name: "", isbn: "", summary: "", isAvailable: true, authorId: "", genreId: "", photoUrl: ""
@@ -188,12 +189,12 @@ const BookPage = () => {
           <Typography variant="h3" sx={{mb: 5}}>
             Books
           </Typography>
-          <Button variant="contained" onClick={() => {
+          {user.isAdmin && <Button variant="contained" onClick={() => {
             setIsUpdateForm(false);
             handleOpenModal();
           }} startIcon={<Iconify icon="eva:plus-fill"/>}>
             New Book
-          </Button>
+          </Button>}
         </Stack>
 
         {isTableLoading ? <Grid padding={2} style={{"textAlign": "center"}}><CircularProgress/></Grid> :
@@ -216,7 +217,7 @@ const BookPage = () => {
                     >
                       {book.genre.name}
                     </Label>
-                    <Label
+                    {user.isAdmin && <Label
                       variant="filled"
                       sx={{
                         zIndex: 9,
@@ -236,14 +237,13 @@ const BookPage = () => {
                       }}>
                         <Iconify icon={'eva:more-vertical-fill'}/>
                       </IconButton>
-                    </Label>
+                    </Label>}
 
 
                     <StyledProductImg alt={book.name} src={book.photoUrl}/>
                   </Box>
 
                   <Stack spacing={1} sx={{p: 2}}>
-
                     <Typography textAlign="center" variant="h5" margin={0} noWrap>{book.name}</Typography>
                     <Typography variant="subtitle1" sx={{color: "#888888"}} paddingBottom={1} noWrap
                                 textAlign="center">{book.author.name}</Typography>

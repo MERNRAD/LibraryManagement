@@ -61,7 +61,7 @@ const UserPage = () => {
   // Data
   const [user, setUser] = useState({
     name: "",
-    dob: null,
+    dob: "",
     email: "",
     password: "",
     phone: "",
@@ -166,7 +166,7 @@ const UserPage = () => {
   const clearForm = () => {
     setUser({
       name: "",
-      dob: null,
+      dob: "",
       email: "",
       password: "",
       phone: "",

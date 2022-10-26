@@ -30,6 +30,7 @@ import BorrowalForm from "../sections/@dashboard/borrowal/BorrowalForm";
 import BorrowalsDialog from "../sections/@dashboard/borrowal/BorrowalDialog";
 import {applySortFilter, getComparator} from "../utils/tableOperations";
 import Label from "../components/label";
+import {useAuth} from "../useAuth";
 
 
 // ----------------------------------------------------------------------
@@ -39,12 +40,13 @@ const TABLE_HEAD = [{id: 'memberName', label: 'Member Name', alignRight: false},
   {id: 'borrowedDate', label: 'Borrowed On', alignRight: false},
   {id: 'dueDate', label: 'Due On', alignRight: false},
   {id: 'status', label: 'Status', alignRight: false},
-  {id: '', label: '', alignRight: false}, {id: '', label: '', alignRight: false}];
+  {id: '', label: '', alignRight: true}, {id: '', label: '', alignRight: false}];
 
 
 // ----------------------------------------------------------------------
 
 const BorrowalPage = () => {
+  const {user} = useAuth();
   // State variables
   // Table
   const [page, setPage] = useState(0);
@@ -93,7 +95,11 @@ const BorrowalPage = () => {
       .then((response) => {
         // handle success
         console.log(response.data)
-        setBorrowals(response.data.borrowalsList)
+        if (user.isAdmin) {
+          setBorrowals(response.data.borrowalsList)
+        } else {
+          setBorrowals(response.data.borrowalsList.filter((borrowal) => user._id === borrowal.memberId))
+        }
         setIsTableLoading(false)
       })
       .catch((error) => {
