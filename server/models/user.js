@@ -8,10 +8,28 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  password: {
+  email: {
     type: String,
     required: true,
-  }
+  },
+  dob: {
+    type: Date,
+    required: false,
+  },
+  phone: {
+    type: String,
+    required: false,
+  },
+  isAdmin: {
+    type: Boolean,
+    required: true,
+  },
+  photoUrl: {
+    type: String,
+    required: true,
+  },
+  hash: String,
+  salt: String,
 });
 
 // Method to set salt and hash the password for a user

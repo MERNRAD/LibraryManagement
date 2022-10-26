@@ -18,29 +18,53 @@ const getUser = async (req, res) => {
 const getAllUsers = async (req, res) => {
     User.find({}, (err, users)=>{
         if (err) {
-            return res.status(400).json({ success: false, err });
+          return res.status(400).json({success: false, err});
         }
 
-        return res.status(200).json({
-            success: true,
-            usersList: users
-        });
+      return res.status(200).json({
+        success: true,
+        usersList: users
+      });
     })
 }
 
+const getAllMembers = async (req, res) => {
+  User.find({isAdmin: false}, (err, members) => {
+    if (err) {
+      return res.status(400).json({success: false, err});
+    }
+
+    return res.status(200).json({
+      success: true,
+      membersList: members
+    });
+  })
+}
+
 const addUser = async (req, res) => {
-    const newUser = req.body
+  const newUser = req.body
+  console.log(req.body)
 
-    User.create(newUser, (err, user) => {
+  User.findOne({email: newUser.email}, (err, user) => {
+    if (err) {
+      return res.status(400).json({success: false, err});
+    }
+    if (user) {
+      return res.status(403).json({success: false, message: "User already exists"});
+    } else {
+      const newUser = new User(req.body);
+      newUser.setPassword(req.body.password);
+      newUser.save((err, user) => {
         if (err) {
-            return res.status(400).json({ success: false, err });
+          return res.status(400).json({success: false, err});
         }
-
-        return res.status(200).json({
-            success: true,
-            newUser: user
+        return res.status(201).json({
+          success: true,
+          user
         });
-    })
+      })
+    }
+  })
 }
 
 const updateUser = async (req, res) => {
@@ -75,9 +99,10 @@ const deleteUser = async (req, res) => {
 }
 
 module.exports = {
-    getUser,
-    getAllUsers,
-    addUser,
-    updateUser,
-    deleteUser
+  getUser,
+  getAllUsers,
+  getAllMembers,
+  addUser,
+  updateUser,
+  deleteUser
 }

@@ -25,6 +25,7 @@ import {
 
 // components
 import axios from 'axios'
+import toast from "react-hot-toast";
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
@@ -32,13 +33,18 @@ import UserTableHead from '../sections/@dashboard/user/UserListHead'
 import UserForm from "../sections/@dashboard/user/UserForm";
 import UserDialog from "../sections/@dashboard/user/UserDialog";
 import {applySortFilter, getComparator} from "../utils/tableOperations";
+import Label from "../components/label";
 
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  {id: 'name', label: 'Name', alignRight: false}, 
-  {  id: 'password',  label: 'Password',  alignRight: false},  
+  {id: 'photo', label: 'Photo', alignRight: false},
+  {id: 'name', label: 'Name', alignRight: false},
+  {id: 'dob', label: 'DOB', alignRight: false},
+  {id: 'email', label: 'Email', alignRight: false},
+  {id: 'phone', label: 'Phone', alignRight: false},
+  {id: 'role', label: 'Role', alignRight: false},
   {id: '', label: '', alignRight: false},];
 
 // ----------------------------------------------------------------------
@@ -54,9 +60,12 @@ const UserPage = () => {
 
   // Data
   const [user, setUser] = useState({
-    id: "",
     name: "",
-    description: "",
+    dob: null,
+    email: "",
+    password: "",
+    phone: "",
+    isAdmin: false,
     photoUrl: "https://www.pngitem.com/pimgs/m/645-6452863_profile-image-memoji-brown-hair-man-with-glasses.png"
   })
   const [users, setUsers] = useState([]);
@@ -80,7 +89,7 @@ const UserPage = () => {
         // handle success
         const user = response.data.user
         console.log(response.data.user);
-        setUser({id: "", name: user.name, description: user.description})
+        setUser(user)
       })
       .catch((error) => {
         // handle error
@@ -103,10 +112,7 @@ const UserPage = () => {
   }
 
   const addUser = () => {
-    axios.post('http://localhost:8080/api/user/add', {
-      "name": user.name,
-      "password": user.password
-    })
+    axios.post('http://localhost:8080/api/user/add', user)
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
@@ -114,16 +120,17 @@ const UserPage = () => {
         clearForm();
       })
       .catch((error) => {
-        console.log(error);
-        alert("Something went wrong, please try again")
+        if (error.response.status === 403) {
+          toast.error("User already exists")
+        } else {
+          console.log(error);
+          alert("Something went wrong, please try again")
+        }
       });
   }
 
   const updateUser = () => {
-    axios.put(`http://localhost:8080/api/user/update/${selectedUserId}`, {
-      "name": user.name,
-      "password": user.password
-    })
+    axios.put(`http://localhost:8080/api/user/update/${selectedUserId}`, user)
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
@@ -157,7 +164,15 @@ const UserPage = () => {
   }
 
   const clearForm = () => {
-    setUser({id: "", name: "", description: ""})
+    setUser({
+      name: "",
+      dob: null,
+      email: "",
+      password: "",
+      phone: "",
+      isAdmin: false,
+      photoUrl: ""
+    })
   }
 
   // Handler functions
@@ -232,22 +247,27 @@ const UserPage = () => {
                 rowCount={users.length}
                 onRequestSort={handleRequestSort}
               /><TableBody>
-              {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                const {_id, name, password} = row;
+              {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => {
 
-                return (<TableRow hover key={_id} tabIndex={-1}>
-                 
+                return (<TableRow hover key={user._id} tabIndex={-1}>
 
-                  <TableCell align="left"><Typography variant="subtitle2"
-                                                      noWrap>
-                    {name}
-                  </Typography></TableCell>
 
-                  <TableCell align="left">{password}</TableCell>
+                  <TableCell align="left"> <Avatar alt={user.name} src={user.photoUrl}/></TableCell>
+
+                  <TableCell align="left">{user.name}</TableCell>
+
+                  <TableCell align="left">{(new Date(user.dob)).toLocaleDateString("en-US")}</TableCell>
+
+                  <TableCell align="left">{user.email}</TableCell>
+
+                  <TableCell align="left">{user.phone}</TableCell>
+
+                  <TableCell align="left">{user.isAdmin ? <Label color="warning">Librarian</Label> :
+                    <Label color="success">Member</Label>}</TableCell>
 
                   <TableCell align="right">
                     <IconButton size="large" color="inherit" onClick={(e) => {
-                      setSelectedUserId(_id)
+                      setSelectedUserId(user._id)
                       handleOpenMenu(e)
                     }}>
                       <Iconify icon={'eva:more-vertical-fill'}/>

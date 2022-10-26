@@ -4,14 +4,17 @@ const router = express.Router();
 
 // Import functions from controller
 const {
-    getUser,
-    getAllUsers,
-    addUser,
-    updateUser,
-    deleteUser
+  getUser,
+  getAllUsers,
+  getAllMembers,
+  addUser,
+  updateUser,
+  deleteUser
 } = require('../controllers/userController')
 
-router.get("/getAll", (req, res) => getAllUsers(req,res))   
+router.get("/getAll", (req, res) => getAllUsers(req, res))
+
+router.get("/getAllMembers", (req, res) => getAllMembers(req, res))
 
 router.get("/get/:id", (req, res) => getUser(req, res))
 

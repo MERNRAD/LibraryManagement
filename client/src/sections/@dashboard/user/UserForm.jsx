@@ -1,16 +1,28 @@
-import {Box, Button, Container, Modal, Stack, TextField, Typography} from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  FormControl, FormControlLabel,
+  FormLabel,
+  Grid,
+  Modal, Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+  Typography
+} from "@mui/material";
 import PropTypes from "prop-types";
 import Iconify from "../../../components/iconify";
 
 const UserForm = ({
-                      isUpdateForm,
-                      isModalOpen,
-                      handleCloseModal,
-                      user,
-                      setUser,
-                      handleAddUser,
-                      handleUpdateUser
-                    }) => {
+                    isUpdateForm,
+                    isModalOpen,
+                    handleCloseModal,
+                    user,
+                    setUser,
+                    handleAddUser,
+                    handleUpdateUser
+                  }) => {
 
 
   const style = {
@@ -39,13 +51,60 @@ const UserForm = ({
             {isUpdateForm ? <span>Update</span> : <span>Add</span>} user
           </Typography>
           <Stack spacing={3} paddingY={2}>
+            <Grid container spacing={0}>
+              <Grid item xs={12} md={8} paddingRight={1}>
+                <TextField fullWidth name="name" label="Name" value={user.name} autoFocus required
+                           onChange={(e) => setUser({
+                             ...user,
+                             name: e.target.value,
+                             photoUrl: `https://avatars.dicebear.com/api/male/${e.target.value.replace(" ", "+")}.svg`
+                           })}/>
+              </Grid>
+              <Grid item xs={12} md={4} paddingLeft={1}>
+                <TextField fullWidth name="dob" label="Date of Birth" type="date" value={user.dob}
+                           InputLabelProps={{shrink: true}}
+                           onChange={(e) => setUser({...user, dob: e.target.value})}/>
+              </Grid>
+            </Grid>
 
-            <TextField name="name" label="User name" value={user.name} autoFocus required
-                       onChange={(e) => setUser({...user, name: e.target.value})}/>
+
+            <Grid container spacing={0} sx={{paddingBottom: "4px"}}>
+              <Grid item xs={12} md={6} paddingRight={1}>
+                <TextField fullWidth name="email" label="Email" type="email" value={user.email} required
+                           onChange={(e) => setUser({...user, email: e.target.value})}/>
+              </Grid>
+              <Grid item xs={12} md={6} paddingLeft={1}>
+                <TextField fullWidth name="phone" label="Phone" type="number" value={user.phone}
+                           onChange={(e) => setUser({...user, phone: e.target.value})}/>
+              </Grid>
+            </Grid>
+
+            <FormControl>
+              <FormLabel id="available-label" sx={{textAlign: "center"}}>User role</FormLabel>
+              <RadioGroup
+                sx={{paddingTop: "10px"}}
+                aria-labelledby="available-label"
+                defaultValue={user.isAdmin}
+                name="radio-buttons-group"
+                onChange={(e) => setUser({...user, isAdmin: e.target.value})}
+              >
+                <Grid container spacing={0}>
+                  <Grid item xs={12} md={6} paddingRight={1}>
+                    <FormControlLabel value control={<Radio/>} label="Librarian"
+                                      sx={{textAlign: "center", justifyContent: "center", width: "100%"}}/>
+                  </Grid>
+                  <Grid item xs={12} md={6} paddingLeft={1}>
+                    <FormControlLabel value={false} control={<Radio/>} label="Member"
+                                      sx={{textAlign: "center", justifyContent: "center", width: "100%"}}/>
+                  </Grid>
+                </Grid>
+              </RadioGroup>
+            </FormControl>
+
+
             <TextField name="password" type="password" label="Password" value={user.password} required
+                       onChange={(e) => setUser({...user, password: e.target.value})}/>
 
-                       onChange={(e) => setUser({...user, password: e.target.value})}
-            />
 
             <br/>
             <Box textAlign="center">
