@@ -1,20 +1,32 @@
-import { Helmet } from 'react-helmet-async';
+import {Helmet} from 'react-helmet-async';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import {useEffect, useState} from 'react';
 
 
 // @mui
-import { Box, Card, Button, IconButton, Link, Popover, MenuItem, Container, Stack, Grid, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Container,
+  Grid,
+  IconButton,
+  MenuItem,
+  Popover,
+  Stack,
+  Typography
+} from '@mui/material';
+import {styled} from '@mui/material/styles';
 
+import {Alert} from "@mui/lab";
 import Iconify from '../components/iconify';
 import Label from '../components/label';
 
 // components
-import BookDialog from "../sections/@dashboard/books/BookDialog";
+import BookDialog from "../sections/@dashboard/book/BookDialog";
 
-import BookForm from "../sections/@dashboard/books/BookForm";
+import BookForm from "../sections/@dashboard/book/BookForm";
 
 // ----------------------------------------------------------------------
 
@@ -27,18 +39,10 @@ const StyledProductImg = styled('img')({
 });
 
 const BookPage = () => {
-  // State variables
-  // Table
-  const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
-  const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // Data
   const [book, setBook] = useState({
-    id: "", name: "", isbn: "", summary: "", isAvailable: "", authorId: "", genreId: "", photoUrl: ""
-
+    id: "", name: "", isbn: "", summary: "", isAvailable: true, authorId: "", genreId: "", photoUrl: ""
   })
   const [books, setBooks] = useState([]);
   const [selectedBookId, setSelectedBookId] = useState(null)
@@ -56,7 +60,7 @@ const BookPage = () => {
         // handle success
         const book = response.data.book
         console.log(response.data.book);
-        setBook({ id: "", name: book.name, description: book.description })
+        setBook({id: "", name: book.name, description: book.description})
       })
       .catch((error) => {
         // handle error
@@ -79,16 +83,7 @@ const BookPage = () => {
   }
 
   const addBook = () => {
-    axios.post('http://localhost:8080/api/book/add', {
-      name: book.name, 
-      isbn: book.isbn, 
-      summary: book.summary, 
-      isAvailable: book.isAvailable, 
-      authorId: book.authorId, 
-      genreId: book.genreId, 
-      photoUrl: book.photoUrl
-
-    })
+    axios.post('http://localhost:8080/api/book/add', book)
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
@@ -102,15 +97,7 @@ const BookPage = () => {
   }
 
   const updateBook = () => {
-    axios.put(`http://localhost:8080/api/book/update/${selectedBookId}`, {
-      name: book.name, 
-      isbn: book.isbn, 
-      summary: book.summary, 
-      isAvailable: book.isAvailable, 
-      authorId: book.authorId, 
-      genreId: book.genreId, 
-      photoUrl: book.photoUrl
-    })
+    axios.put(`http://localhost:8080/api/book/update/${selectedBookId}`, book)
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
@@ -140,11 +127,12 @@ const BookPage = () => {
 
   const getSelectedBookDetails = () => {
     const selectedBook = books.find((element) => element._id === selectedBookId)
+    console.log(selectedBook)
     setBook(selectedBook)
   }
 
   const clearForm = () => {
-    setBook({ id: "", name: "", description: "" })
+    setBook({id: "", name: "", isbn: "", summary: "", isAvailable: true, authorId: "", genreId: "", photoUrl: ""})
   }
 
   // Handler functions
@@ -188,94 +176,99 @@ const BookPage = () => {
     setIsModalOpen(false)
   }
 
-  const { id, name, isbn, summary, isAvailable, authorId, genreId, photoUrl } = book;
-
-
-  BookPage.propTypes = {
-    book: PropTypes.object,
-  };
-
   return (
     <>
       <Helmet>
-        <title> Dashboard: Books</title>
+        <title> Books </title>
       </Helmet>
 
       <Container>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
 
-          <Typography variant="h4" sx={{ mb: 5 }}>
+          <Typography variant="h3" sx={{mb: 5}}>
             Books
           </Typography>
           <Button variant="contained" onClick={() => {
             setIsUpdateForm(false);
             handleOpenModal();
-          }} startIcon={<Iconify icon="eva:plus-fill" />}>
+          }} startIcon={<Iconify icon="eva:plus-fill"/>}>
             New Book
           </Button>
         </Stack>
 
-        <Grid container spacing={4}>
-          {books.map((book) => (
-            <Grid key={book._id} item xs={12} sm={6} md={4}>
-              <Card>
-                <Box sx={{ pt: '100%', position: 'relative' }}>
-                  <Label
-                    variant="filled"
-                    sx={{
-                      zIndex: 9,
-                      top: 16,
-                      right: 16,
-                      position: 'absolute',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    {book.genreId}
-                  </Label>
-                  <Label
-                    variant="filled"
-                    sx={{
-                      zIndex: 9,
-                      top: 16,
-                      left: 16,
-                      position: 'absolute',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    <IconButton size="large" color="inherit" onClick={(e) => {
-                      setSelectedBookId(book._id)
-                      handleOpenMenu(e)
-                    }}>
-                      <Iconify icon={'eva:more-vertical-fill'} />
-                    </IconButton>
-                  </Label>
+        {isTableLoading ? <Grid padding={2} style={{"textAlign": "center"}}><CircularProgress/></Grid> :
+
+          books.length > 0 ? <Grid container spacing={4}>
+            {books.map((book) => (
+              <Grid key={book._id} item xs={12} sm={6} md={4}>
+                <Card>
+                  <Box sx={{pt: '80%', position: 'relative'}}>
+                    <Label
+                      variant="filled"
+                      sx={{
+                        zIndex: 9,
+                        top: 16,
+                        left: 16,
+                        position: 'absolute',
+                        textTransform: 'uppercase',
+                        color: 'primary.main',
+                      }}
+                    >
+                      {book.genre.name}
+                    </Label>
+                    <Label
+                      variant="filled"
+                      sx={{
+                        zIndex: 9,
+                        top: 12,
+                        right: 16,
+                        position: 'absolute',
+                        borderRadius: "100%",
+                        width: "30px",
+                        height: "30px",
+                        color: "white",
+                        backgroundColor: "white"
+                      }}
+                    >
+                      <IconButton size="small" color="primary" onClick={(e) => {
+                        setSelectedBookId(book._id)
+                        handleOpenMenu(e)
+                      }}>
+                        <Iconify icon={'eva:more-vertical-fill'}/>
+                      </IconButton>
+                    </Label>
 
 
-                  <StyledProductImg alt={book.name} src={book.photoUrl} />
-                </Box>
+                    <StyledProductImg alt={book.name} src={book.photoUrl}/>
+                  </Box>
 
-                <Stack spacing={1} sx={{ p: 2 }}>
+                  <Stack spacing={1} sx={{p: 2}}>
 
-                  <Typography variant="h5" margin={0} noWrap>{name}</Typography>
-                  <Typography variant="subtitle1" noWrap>{authorId}</Typography>
-                  <Button>{book.isAvailable ? 'Available' : 'N/A'}</Button>
+                    <Typography textAlign="center" variant="h5" margin={0} noWrap>{book.name}</Typography>
+                    <Typography variant="subtitle1" sx={{color: "#888888"}} paddingBottom={1} noWrap
+                                textAlign="center">{book.author.name}</Typography>
+                    <Label color={book.isAvailable ? "success" : "error"}
+                           sx={{padding: 2}}>{book.isAvailable ? 'Available' : 'Not available'}</Label>
 
-                  <Typography variant="subtitle1">ISBN: {book.isbn}</Typography>
-                  <Typography variant="body1">{book.summary}</Typography>
-                </Stack>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                    <Typography variant="subtitle2" textAlign="center" paddingTop={1}>ISBN: {book.isbn}</Typography>
+                    <Typography variant="body2">{book.summary}</Typography>
+                  </Stack>
+                </Card>
+              </Grid>
+            ))}
+          </Grid> : <Alert severity="warning" color="warning">
+            No books found
+          </Alert>
+        }
       </Container>
 
       <Popover
         open={Boolean(isMenuOpen)}
         anchorEl={isMenuOpen}
         onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{vertical: 'top', horizontal: 'left'}}
+        transformOrigin={{vertical: 'top', horizontal: 'right'}}
         PaperProps={{
           sx: {
             p: 1, width: 140, '& .MuiMenuItem-root': {
@@ -290,26 +283,25 @@ const BookPage = () => {
           handleCloseMenu();
           handleOpenModal();
         }}>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          <Iconify icon={'eva:edit-fill'} sx={{mr: 2}}/>
           Edit
         </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }} onClick={handleOpenDialog}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+        <MenuItem sx={{color: 'error.main'}} onClick={handleOpenDialog}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{mr: 2}}/>
           Delete
         </MenuItem>
       </Popover>
 
       <BookForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
-        id={selectedBookId} book={book} setBook={setBook}
-        handleAddBook={addBook} handleUpdateBook={updateBook} />
+                id={selectedBookId} book={book} setBook={setBook}
+                handleAddBook={addBook} handleUpdateBook={updateBook}/>
 
       <BookDialog isDialogOpen={isDialogOpen} bookId={selectedBookId} handleDeleteBook={deleteBook}
-        handleCloseDialog={handleCloseDialog} />
+                  handleCloseDialog={handleCloseDialog}/>
 
     </>
   );
-
 
 
 }
