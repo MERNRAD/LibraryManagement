@@ -21,6 +21,8 @@ import {
 } from '@mui/material';
 
 import axios from 'axios'
+import toast from 'react-hot-toast';
+
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 import BorrowalListHead from '../sections/@dashboard/borrowal/BorrowalListHead'
@@ -111,7 +113,7 @@ const BorrowalPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 
@@ -126,7 +128,7 @@ const BorrowalPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 
@@ -140,7 +142,7 @@ const BorrowalPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 

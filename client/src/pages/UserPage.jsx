@@ -124,7 +124,7 @@ const UserPage = () => {
           toast.error("User already exists")
         } else {
           console.log(error);
-          alert("Something went wrong, please try again")
+          toast.error("Something went wrong, please try again")
         }
       });
   }
@@ -140,7 +140,7 @@ const UserPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 
@@ -154,7 +154,7 @@ const UserPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 

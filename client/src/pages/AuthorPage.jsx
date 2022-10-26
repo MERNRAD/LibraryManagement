@@ -22,6 +22,8 @@ import {
 } from '@mui/material';
 
 import axios from 'axios'
+import toast from 'react-hot-toast';
+
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 
@@ -110,7 +112,7 @@ const AuthorPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 
@@ -125,7 +127,7 @@ const AuthorPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 
@@ -139,7 +141,7 @@ const AuthorPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again")
       });
   }
 
