@@ -1,7 +1,5 @@
 import {Helmet} from 'react-helmet-async';
 import {useEffect, useState} from 'react';
-
-// @mui
 import {Alert} from "@mui/lab";
 import {
   Avatar,
@@ -23,12 +21,10 @@ import {
   Typography,
 } from '@mui/material';
 
-// components
 import axios from 'axios'
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 
-// sections
 import AuthorTableHead from '../sections/@dashboard/author/AuthorListHead'
 import AuthorForm from "../sections/@dashboard/author/AuthorForm";
 import AuthorDialog from "../sections/@dashboard/author/AuthorDialog";
@@ -59,7 +55,7 @@ const AuthorPage = () => {
     id: "",
     name: "",
     description: "",
-    photoUrl: "https://www.pngitem.com/pimgs/m/645-6452863_profile-image-memoji-brown-hair-man-with-glasses.png"
+    photoUrl: ""
   })
   const [authors, setAuthors] = useState([]);
   const [selectedAuthorId, setSelectedAuthorId] = useState(null)
@@ -105,11 +101,7 @@ const AuthorPage = () => {
   }
 
   const addAuthor = () => {
-    axios.post('http://localhost:8080/api/author/add', {
-      "name": author.name,
-      "description": author.description,
-      "photoUrl": author.photoUrl
-    })
+    axios.post('http://localhost:8080/api/author/add', author)
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
@@ -123,11 +115,7 @@ const AuthorPage = () => {
   }
 
   const updateAuthor = () => {
-    axios.put(`http://localhost:8080/api/author/update/${selectedAuthorId}`, {
-      "name": author.name,
-      "description": author.description,
-      "photoUrl": author.photoUrl
-    })
+    axios.put(`http://localhost:8080/api/author/update/${selectedAuthorId}`, author)
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
@@ -225,7 +213,7 @@ const AuthorPage = () => {
           New Author
         </Button>
       </Stack>
-      {isTableLoading ? <Grid style={{"textAlign": "center"}}><CircularProgress size="lg"/></Grid> : <Card>
+      {isTableLoading ? <Grid padding={2} style={{"textAlign": "center"}}><CircularProgress/></Grid> : <Card>
         <Scrollbar>
           {authors.length > 0 ? <TableContainer sx={{minWidth: 800}}>
             <Table>

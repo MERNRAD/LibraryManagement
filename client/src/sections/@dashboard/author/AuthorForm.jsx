@@ -41,7 +41,11 @@ const AuthorForm = ({
           <Stack spacing={3} paddingY={2}>
 
             <TextField name="name" label="Author name" value={author.name} autoFocus required
-                       onChange={(e) => setAuthor({...author, name: e.target.value})}/>
+                       onChange={(e) => setAuthor({
+                         ...author,
+                         name: e.target.value,
+                         photoUrl: `https://avatars.dicebear.com/api/initials/${e.target.value.replace(" ", "+")}.svg`
+                       })}/>
             <TextField name="description" label="Description" value={author.description} multiline
                        rows={2}
                        maxRows={4}
