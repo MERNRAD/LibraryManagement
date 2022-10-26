@@ -1,31 +1,41 @@
-import { useState } from 'react';
-// @mui
-import { alpha } from '@mui/material/styles';
-import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
-// mocks_
-import account from '../../../_mock/account';
+import {useState} from 'react';
+import {alpha} from '@mui/material/styles';
+import {Avatar, Box, Divider, IconButton, MenuItem, Popover, Typography} from '@mui/material';
+import axios from "axios";
+import {useAuth} from "../../../useAuth";
 
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
-    icon: 'eva:home-fill',
-  },
-  {
     label: 'Profile',
     icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
   },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const {user} = useAuth();
+  const {logout} = useAuth();
   const [open, setOpen] = useState(null);
+
+  const logoutUser = () => {
+    handleClose();
+    axios.get(`http://localhost:8080/api/auth/logout`, {withCredentials: true})
+      .then((response) => {
+        // handle success
+        if (response.status === 200) {
+          console.log(response.data);
+          logout();
+        }
+      })
+      .catch((error) => {
+        // handle error
+        alert(error);
+        console.log(error);
+      })
+  };
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -54,7 +64,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={user.photoUrl} alt={user.name}/>
       </IconButton>
 
       <Popover
@@ -78,26 +88,26 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {user.name}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+          <Typography variant="body2" sx={{color: 'text.secondary'}} noWrap>
+            {user.email}
           </Typography>
         </Box>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        <Divider sx={{borderStyle: 'dashed'}}/>
 
-        <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Stack>
+        {/* <Stack sx={{ p: 1 }}> */}
+        {/*  {MENU_OPTIONS.map((option) => ( */}
+        {/*    <MenuItem key={option.label} onClick={handleClose}> */}
+        {/*      {option.label} */}
+        {/*    </MenuItem> */}
+        {/*  ))} */}
+        {/* </Stack> */}
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={logoutUser} sx={{m: 1}}>
           Logout
         </MenuItem>
       </Popover>

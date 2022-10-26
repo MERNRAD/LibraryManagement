@@ -1,45 +1,44 @@
-import { Navigate, useRoutes } from 'react-router-dom';
+import {Navigate, useRoutes} from 'react-router-dom';
 // layouts
-import DashboardLayout from './layouts/dashboard';
-import SimpleLayout from './layouts/simple';
+import LibraryApp from './layouts/dashboard';
 //
-import BlogPage from './pages/BlogPage';
-import UserPage from './pages/UserPage';
+import AuthorPage from './pages/AuthorPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
+import BorrowalPage from './pages/BorrowalPage';
+import BookPage from './pages/BookPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import UsersPage from './pages/UserPage';
+import GenrePage from "./pages/GenrePage";
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const routes = useRoutes([
     {
-      path: '/dashboard',
-      element: <DashboardLayout />,
+      path: '/',
+      element: <LibraryApp/>,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
+        {element: <Navigate to="/app"/>, index: true},
+        {path: 'dashboard', element: <DashboardAppPage/>},
+        {path: 'authors', element: <AuthorPage/>},
+        {path: 'books', element: <BookPage/>},
+        {path: 'borrowals', element: <BorrowalPage/>},
+        {path: 'genres', element: <GenrePage/>},
+        {path: 'users', element: <UsersPage/>},
       ],
     },
     {
       path: 'login',
-      element: <LoginPage />,
+      element: <LoginPage/>,
     },
     {
-      element: <SimpleLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" /> },
-      ],
+      path: '404',
+      element: <Page404/>,
     },
     {
       path: '*',
-      element: <Navigate to="/404" replace />,
+      element: <Navigate to="/dashboard" replace/>,
     },
   ]);
 

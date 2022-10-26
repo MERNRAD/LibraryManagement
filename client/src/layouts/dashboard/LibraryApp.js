@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import {useState} from 'react';
+import {Navigate, Outlet} from 'react-router-dom';
 // @mui
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 //
 import Header from './header';
 import Nav from './nav';
+import {useAuth} from "../../useAuth";
 
 // ----------------------------------------------------------------------
 
@@ -32,17 +33,20 @@ const Main = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function DashboardLayout() {
+export default function LibraryApp() {
   const [open, setOpen] = useState(false);
+  const {user} = useAuth();
+
+  if (!user) {
+    return <Navigate to={'/login'} replace/>
+  }
 
   return (
     <StyledRoot>
-      <Header onOpenNav={() => setOpen(true)} />
-
-      <Nav openNav={open} onCloseNav={() => setOpen(false)} />
-
+      <Header onOpenNav={() => setOpen(true)}/>
+      <Nav openNav={open} onCloseNav={() => setOpen(false)}/>
       <Main>
-        <Outlet />
+        <Outlet/>
       </Main>
     </StyledRoot>
   );

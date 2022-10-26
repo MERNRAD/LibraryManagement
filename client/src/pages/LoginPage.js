@@ -1,31 +1,18 @@
-import { Helmet } from 'react-helmet-async';
-// @mui
-import { styled } from '@mui/material/styles';
-import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
-// hooks
-import useResponsive from '../hooks/useResponsive';
-// components
+import {Helmet} from 'react-helmet-async';
+import {styled} from '@mui/material/styles';
+import {Container, Typography} from '@mui/material';
+import axios from "axios";
+import toast from "react-hot-toast";
 import Logo from '../components/logo';
-import Iconify from '../components/iconify';
-// sections
-import { LoginForm } from '../sections/auth/login';
+import {LoginForm} from '../sections/auth/login';
+import {useAuth} from "../useAuth";
 
 // ----------------------------------------------------------------------
 
-const StyledRoot = styled('div')(({ theme }) => ({
+const StyledRoot = styled('div')(({theme}) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex',
   },
-}));
-
-const StyledSection = styled('div')(({ theme }) => ({
-  width: '100%',
-  maxWidth: 480,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  boxShadow: theme.customShadows.card,
-  backgroundColor: theme.palette.background.default,
 }));
 
 const StyledContent = styled('div')(({ theme }) => ({
@@ -41,12 +28,34 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
-  const mdUp = useResponsive('up', 'md');
+  const {login} = useAuth();
+
+  const loginUser = (email, password) => {
+    if (email === '' || password === '') {
+      toast.error("Please enter email and password")
+    } else {
+      axios.post(`http://localhost:8080/api/auth/login`, {email, password}, {withCredentials: false})
+        .then((response) => {
+          // handle success
+          if (response.status === 200) {
+            console.log(response.data);
+            toast.success(`Successfully logged in as ${response.data.user.name}`);
+            login(response.data.user);
+          }
+        })
+        .catch((error) => {
+          // handle error
+          toast.error(error.response.data.message);
+          console.log(error);
+        })
+    }
+  };
+
 
   return (
     <>
       <Helmet>
-        <title> Login | Minimal UI </title>
+        <title> Login | Library</title>
       </Helmet>
 
       <StyledRoot>
@@ -58,47 +67,17 @@ export default function LoginPage() {
           }}
         />
 
-        {mdUp && (
-          <StyledSection>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
-          </StyledSection>
-        )}
-
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" gutterBottom>
-              Sign in to Minimal
+            <Typography variant="h4" color="inherit" textAlign="center" gutterBottom paddingBottom={0}>
+              Library System
+            </Typography>
+            <Typography variant="h3" textAlign="center" gutterBottom paddingBottom={3}>
+              Sign in
             </Typography>
 
-            <Typography variant="body2" sx={{ mb: 5 }}>
-              Don’t have an account? {''}
-              <Link variant="subtitle2">Get started</Link>
-            </Typography>
+            <LoginForm loginUser={loginUser}/>
 
-            <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
-              </Button>
-
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:facebook-fill" color="#1877F2" width={22} height={22} />
-              </Button>
-
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
-              </Button>
-            </Stack>
-
-            <Divider sx={{ my: 3 }}>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                OR
-              </Typography>
-            </Divider>
-
-            <LoginForm />
           </StyledContent>
         </Container>
       </StyledRoot>

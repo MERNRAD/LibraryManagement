@@ -1,4 +1,6 @@
 const Borrowal = require('../models/borrowal')
+const mongoose = require("mongoose");
+const Book = require("../models/book");
 
 const getBorrowal = async (req, res) => {
     const borrowalId = req.params.id;
@@ -16,9 +18,30 @@ const getBorrowal = async (req, res) => {
 }
 
 const getAllBorrowals = async (req, res) => {
-    Borrowal.find({}, (err, borrowals)=>{
+    Borrowal.aggregate([{
+        $lookup: {
+            from: "users",
+            localField: "memberId",
+            foreignField: "_id",
+            as: "member"
+        },
+    },
+        {
+            $unwind: "$member"
+        },
+        {
+            $lookup: {
+                from: "books",
+                localField: "bookId",
+                foreignField: "_id",
+                as: "book"
+            },
+        },
+        {
+            $unwind: "$book"
+        },]).exec((err, borrowals) => {
         if (err) {
-            return res.status(400).json({ success: false, err });
+            return res.status(400).json({success: false, err});
         }
 
         return res.status(200).json({
@@ -29,16 +52,26 @@ const getAllBorrowals = async (req, res) => {
 }
 
 const addBorrowal = async (req, res) => {
-    const newBorrowal = req.body
+    const newBorrowal = {
+        ...req.body,
+        memberId: mongoose.Types.ObjectId(req.body.memberId),
+        bookId: mongoose.Types.ObjectId(req.body.bookId)
+    }
 
     Borrowal.create(newBorrowal, (err, borrowal) => {
         if (err) {
-            return res.status(400).json({ success: false, err });
+            return res.status(400).json({success: false, err});
         }
 
-        return res.status(200).json({
-            success: true,
-            newBorrowal: borrowal
+        Book.findByIdAndUpdate(newBorrowal.bookId, {isAvailable: false}, (err, book) => {
+            if (err) {
+                return res.status(400).json({success: false, err});
+            }
+
+            return res.status(200).json({
+                success: true,
+                newBorrowal: borrowal
+            });
         });
     })
 }
@@ -64,12 +97,18 @@ const deleteBorrowal = async (req, res) => {
 
     Borrowal.findByIdAndDelete(borrowalId, (err, borrowal) => {
         if (err) {
-            return res.status(400).json({ success: false, err });
+            return res.status(400).json({success: false, err});
         }
 
-        return res.status(200).json({
-            success: true,
-            deletedBorrowal: borrowal
+        Book.findByIdAndUpdate(borrowal.bookId, {isAvailable: true}, (err, book) => {
+            if (err) {
+                return res.status(400).json({success: false, err});
+            }
+
+            return res.status(200).json({
+                success: true,
+                deletedBorrowal: borrowal
+            });
         });
     })
 }
