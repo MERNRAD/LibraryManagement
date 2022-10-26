@@ -14,7 +14,6 @@ const borrowalRouter = require("./routes/borrowalRouter")
 const genreRouter = require("./routes/genreRouter") 
 const userRouter = require("./routes/userRouter") 
 const reviewRouter = require("./routes/reviewRouter")
-const memberRouter = require("./routes/memberRouter")
 
 // Configure dotenv for environment variables in production
 if (process.env.NODE_ENV !== "production") {
@@ -38,7 +37,7 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true
 })
   .then(() => {
-    console.log('Connected to DB');
+    console.log('Connected to DB on MongoDB Atlas')
   })
   .catch((err) => console.log('DB connection error', err));
 
@@ -79,7 +78,6 @@ app.use("/api/borrowal", borrowalRouter);
 app.use("/api/genre", genreRouter);
 app.use("/api/user", userRouter); 
 app.use("/api/review", reviewRouter);
-app.use("/api/member", memberRouter);
 
 app.get('/', (req, res) => res.send('Welcome to Library Management System'));
 

@@ -1,40 +1,35 @@
-// component
-import SvgColor from '../../../components/svg-color';
-
-// ----------------------------------------------------------------------
-
-const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
+import {FiBookOpen, FiCheckCircle, FiHome, FiList, FiLock, FiUsers} from "react-icons/fi";
 
 const navConfig = [
   {
     title: 'Dashboard',
     path: '/dashboard',
-    icon: icon('ic_analytics'),
+    icon: <FiHome/>,
   },
   {
     title: 'Books',
     path: '/books',
-    icon: icon('ic_cart'),
+    icon: <FiBookOpen/>,
   },
   {
     title: 'Authors',
     path: '/authors',
-    icon: icon('ic_user'),
+    icon: <FiUsers/>,
   },
   {
     title: 'Genres',
     path: '/genres',
-    icon: icon('ic_blog'),
+    icon: <FiList/>,
   },
   {
     title: 'Borrowals',
-    path: '/borrowal',
-    icon: icon('ic_cart'),
+    path: '/borrowals',
+    icon: <FiCheckCircle/>,
   },
   {
     title: 'Users',
     path: '/users',
-    icon: icon('ic_lock'),
+    icon: <FiLock/>,
   },
 ];
 

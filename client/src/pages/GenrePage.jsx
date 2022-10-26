@@ -4,12 +4,10 @@ import {useEffect, useState} from 'react';
 // @mui
 import {Alert} from "@mui/lab";
 import {
-  Avatar,
   Button,
   Card,
   CircularProgress,
   Container,
-  getBreadcrumbsUtilityClass,
   Grid,
   IconButton,
   MenuItem,
@@ -37,7 +35,7 @@ import {applySortFilter, getComparator} from "../utils/tableOperations";
 
 // ----------------------------------------------------------------------
 
-const TABLE_HEAD = [{id: 'photo', label: 'Photo', alignRight: false}, {
+const TABLE_HEAD = [{
   id: 'name',
   label: 'Name',
   alignRight: false
@@ -104,11 +102,7 @@ const GenrePage = () => {
   }
 
   const addGenre = () => {
-    axios.post('http://localhost:8080/api/genre/add', {
-      "name": genre.name,
-      "description": genre.description,
-      "photoUrl": genre.photoUrl
-    })
+    axios.post('http://localhost:8080/api/genre/add', genre)
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
@@ -122,11 +116,7 @@ const GenrePage = () => {
   }
 
   const updateGenre = () => {
-    axios.put(`http://localhost:8080/api/genre/update/${selectedGenreId}`, {
-      "name": genre.name,
-      "description": genre.description,
-      "photoUrl": genre.photoUrl
-    })
+    axios.put(`http://localhost:8080/api/genre/update/${selectedGenreId}`, genre)
       .then((response) => {
         console.log(response.data);
         handleCloseModal();
@@ -239,12 +229,6 @@ const GenrePage = () => {
                 const {_id, name, description, photoUrl} = row;
 
                 return (<TableRow hover key={_id} tabIndex={-1}>
-                  <TableCell align="center"><Stack direction="row"
-                                                   alignItems="center"
-                                                   spacing={4}>
-                    <Avatar alt={name} src={photoUrl}/>
-
-                  </Stack></TableCell>
 
                   <TableCell align="left"><Typography variant="subtitle2"
                                                       noWrap>

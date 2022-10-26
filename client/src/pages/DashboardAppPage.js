@@ -1,46 +1,48 @@
-import { Helmet } from 'react-helmet-async';
-import { faker } from '@faker-js/faker';
+import {Helmet} from 'react-helmet-async';
+import {faker} from '@faker-js/faker';
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import {useTheme} from '@mui/material/styles';
+import {Container, Grid, Typography} from '@mui/material';
 // components
 import Iconify from '../components/iconify';
 // sections
 import {
-  AppTasks,
+  AppConversionRates,
+  AppCurrentSubject,
+  AppCurrentVisits,
   AppNewsUpdate,
   AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
+  AppTasks,
   AppTrafficBySite,
+  AppWebsiteVisits,
   AppWidgetSummary,
-  AppCurrentSubject,
-  AppConversionRates,
 } from '../sections/@dashboard/app';
+import {useAuth} from "../useAuth";
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
+  const {user} = useAuth();
   const theme = useTheme();
 
   return (
     <>
       <Helmet>
-        <title> Dashboard | Minimal UI </title>
+        <title> Library </title>
       </Helmet>
 
       <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
+        <Typography variant="h4" sx={{mb: 5}}>
+          Hi {user.name.split(' ')[0]}, Welcome back
         </Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'ant-design:android-filled'}/>
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'}/>
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>

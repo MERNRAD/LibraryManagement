@@ -27,24 +27,18 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res, next) => {
   User.findOne({email: req.body.email}, (err, user) => {
     if (err) {
-      return res.status(400).json({success: false, err});
+      return res.status(500).json({success: false, err});
     }
     if (!user) {
-      return res.status(403).json({success: false, message: "User not found"});
+      return res.status(404).json({success: false, message: "User not found"});
     }
     if (!user.isValidPassword(req.body.password)) {
-      return res.status(403).json({success: false, message: "Password incorrect"});
+      return res.status(401).json({success: false, message: "Password incorrect"});
     }
     passport.authenticate("local", (err, user, info) => {
-      if (err) {
-        return res.status(400).json({success: false, err});
-      }
-      if (!user) {
-        return res.status(403).json({success: false, message: info.message});
-      }
       req.logIn(user, (err) => {
         if (err) {
-          return res.status(400).json({success: false, err});
+          throw err;
         }
         return res.status(200).json({
           success: true,

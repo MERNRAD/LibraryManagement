@@ -1,10 +1,7 @@
 import {useState} from 'react';
-// @mui
 import {alpha} from '@mui/material/styles';
-import {Avatar, Box, Divider, IconButton, MenuItem, Popover, Stack, Typography} from '@mui/material';
-// mocks_
+import {Avatar, Box, Divider, IconButton, MenuItem, Popover, Typography} from '@mui/material';
 import axios from "axios";
-import account from '../../../_mock/account';
 import {useAuth} from "../../../useAuth";
 
 // ----------------------------------------------------------------------
@@ -67,7 +64,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={user.photoUrl} alt={user.name}/>
       </IconButton>
 
       <Popover
@@ -93,22 +90,22 @@ export default function AccountPopover() {
           <Typography variant="subtitle2" noWrap>
             {user.name}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+          <Typography variant="body2" sx={{color: 'text.secondary'}} noWrap>
             {user.email}
           </Typography>
         </Box>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        <Divider sx={{borderStyle: 'dashed'}}/>
 
-        <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Stack>
+        {/* <Stack sx={{ p: 1 }}> */}
+        {/*  {MENU_OPTIONS.map((option) => ( */}
+        {/*    <MenuItem key={option.label} onClick={handleClose}> */}
+        {/*      {option.label} */}
+        {/*    </MenuItem> */}
+        {/*  ))} */}
+        {/* </Stack> */}
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+        {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
 
         <MenuItem onClick={logoutUser} sx={{m: 1}}>
           Logout
