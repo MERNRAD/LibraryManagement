@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 
 import { Alert } from "@mui/lab";
 import {
-  Avatar,
   Button,
   Card,
   CircularProgress,
@@ -23,27 +22,27 @@ import {
   TableRow,
   Typography
 } from "@mui/material";
-import { useAuth } from "../useAuth";
+import Iconify from "../../../components/iconify";
+import Scrollbar from "../../../components/scrollbar";
+import GenreTableHead from "./GenreListHead";
+import GenreForm from "./GenreForm";
+import GenreDialog from "./GenreDialog";
+import { applySortFilter, getComparator } from "../../../utils/tableOperations";
+import { useAuth } from "../../../hooks/useAuth";
+import { apiUrl, methods, routes } from "../../../constants";
 
-import Iconify from "../components/iconify";
-import Scrollbar from "../components/scrollbar";
-
-import AuthorTableHead from "../sections/@dashboard/author/AuthorListHead";
-import AuthorForm from "../sections/@dashboard/author/AuthorForm";
-import AuthorDialog from "../sections/@dashboard/author/AuthorDialog";
-import { applySortFilter, getComparator } from "../utils/tableOperations";
 
 // ----------------------------------------------------------------------
 
-const TABLE_HEAD = [{id: 'photo', label: 'Photo', alignRight: false}, {
-  id: 'name',
-  label: 'Name',
+const TABLE_HEAD = [{
+  id: "name",
+  label: "Name",
   alignRight: false
-}, {id: 'description', label: 'Description', alignRight: false}, {id: '', label: '', alignRight: false},];
+}, { id: "description", label: "Description", alignRight: false }, { id: "", label: "", alignRight: false }];
 
 // ----------------------------------------------------------------------
 
-const AuthorPage = () => {
+const GenrePage = () => {
   const {user} = useAuth();
   // State variables
   // Table
@@ -54,14 +53,13 @@ const AuthorPage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // Data
-  const [author, setAuthor] = useState({
+  const [genre, setGenre] = useState({
     id: "",
     name: "",
     description: "",
-    photoUrl: ""
   })
-  const [authors, setAuthors] = useState([]);
-  const [selectedAuthorId, setSelectedAuthorId] = useState(null)
+  const [genres, setGenres] = useState([]);
+  const [selectedGenreId, setSelectedGenreId] = useState(null)
   const [isTableLoading, setIsTableLoading] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -70,31 +68,17 @@ const AuthorPage = () => {
 
   // Load data on initial page load
   useEffect(() => {
-    getAllAuthors();
+    getAllGenres();
   }, []);
 
   // API operations
 
-  const getAuthor = () => {
-    axios.get(`http://localhost:8080/api/author/get${selectedAuthorId}`)
-      .then((response) => {
-        // handle success
-        const {author} = response.data
-        console.log(response.data.author);
-        setAuthor({id: "", name: author.name, description: author.description})
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error);
-      })
-  }
-
-  const getAllAuthors = () => {
-    axios.get('http://localhost:8080/api/author/getAll')
+  const getAllGenres = () => {
+    axios.get(apiUrl(routes.GENRE, methods.GET_ALL))
       .then((response) => {
         // handle success
         console.log(response.data)
-        setAuthors(response.data.authorsList)
+        setGenres(response.data.genresList)
         setIsTableLoading(false)
       })
       .catch((error) => {
@@ -103,13 +87,13 @@ const AuthorPage = () => {
       })
   }
 
-  const addAuthor = () => {
-    axios.post('http://localhost:8080/api/author/add', author)
+  const addGenre = () => {
+    axios.post(apiUrl(routes.GENRE, methods.POST), genre)
       .then((response) => {
-        toast.success("Author added");
         console.log(response.data);
+        toast.success("Genre added");
         handleCloseModal();
-        getAllAuthors();
+        getAllGenres();
         clearForm();
       })
       .catch((error) => {
@@ -118,14 +102,14 @@ const AuthorPage = () => {
       });
   }
 
-  const updateAuthor = () => {
-    axios.put(`http://localhost:8080/api/author/update/${selectedAuthorId}`, author)
+  const updateGenre = () => {
+    axios.put(apiUrl(routes.GENRE, methods.PUT, selectedGenreId), genre)
       .then((response) => {
-        toast.success("Author updated");
         console.log(response.data);
+        toast.success("Genre updated");
         handleCloseModal();
         handleCloseMenu();
-        getAllAuthors();
+        getAllGenres();
         clearForm();
       })
       .catch((error) => {
@@ -134,14 +118,14 @@ const AuthorPage = () => {
       });
   }
 
-  const deleteAuthor = (authorId) => {
-    axios.delete(`http://localhost:8080/api/author/delete/${authorId}`)
+  const deleteGenre = (genreId) => {
+    axios.delete(apiUrl(routes.GENRE, methods.DELETE, genreId))
       .then((response) => {
-        toast.success("Author deleted");
+        toast.success("Genre deleted");
         handleCloseDialog();
         handleCloseMenu();
         console.log(response.data);
-        getAllAuthors();
+        getAllGenres();
       })
       .catch((error) => {
         console.log(error);
@@ -149,13 +133,13 @@ const AuthorPage = () => {
       });
   }
 
-  const getSelectedAuthorDetails = () => {
-    const selectedAuthor = authors.find((element) => element._id === selectedAuthorId)
-    setAuthor(selectedAuthor)
+  const getSelectedGenreDetails = () => {
+    const selectedGenre = genres.find((element) => element._id === selectedGenreId)
+    setGenre(selectedGenre)
   }
 
   const clearForm = () => {
-    setAuthor({id: "", name: "", description: ""})
+    setGenre({id: "", name: "", description: ""})
   }
 
   // Handler functions
@@ -181,7 +165,7 @@ const AuthorPage = () => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-    setAuthors(applySortFilter(authors, getComparator(order, orderBy), filterName));
+    setGenres(applySortFilter(genres, getComparator(order, orderBy), filterName));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -203,43 +187,37 @@ const AuthorPage = () => {
 
   return (<>
     <Helmet>
-      <title>Library App | Authors</title>
+      <title>Genres</title>
     </Helmet>
 
 
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h3" gutterBottom>
-          Authors
+          Genres
         </Typography>
         {user.isAdmin && <Button variant="contained" onClick={() => {
           setIsUpdateForm(false);
           handleOpenModal();
         }} startIcon={<Iconify icon="eva:plus-fill"/>}>
-          New Author
+          New Genre
         </Button>}
       </Stack>
-      {isTableLoading ? <Grid padding={2} style={{"textAlign": "center"}}><CircularProgress/></Grid> : <Card>
+      {isTableLoading ? <Grid style={{"textAlign": "center"}}><CircularProgress size="lg"/></Grid> : <Card>
         <Scrollbar>
-          {authors.length > 0 ? <TableContainer sx={{minWidth: 800}}>
+          {genres.length > 0 ? <TableContainer sx={{minWidth: 800}}>
             <Table>
-              <AuthorTableHead
+              <GenreTableHead
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={authors.length}
+                rowCount={genres.length}
                 onRequestSort={handleRequestSort}
               /><TableBody>
-              {authors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              {genres.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 const {_id, name, description, photoUrl} = row;
 
                 return (<TableRow hover key={_id} tabIndex={-1}>
-                  <TableCell align="center"><Stack direction="row"
-                                                   alignItems="center"
-                                                   spacing={4}>
-                    <Avatar alt={name} src={photoUrl}/>
-
-                  </Stack></TableCell>
 
                   <TableCell align="left"><Typography variant="subtitle2"
                                                       noWrap>
@@ -247,27 +225,26 @@ const AuthorPage = () => {
                   </Typography></TableCell>
 
                   <TableCell align="left">{description}</TableCell>
+
                   <TableCell align="right">
-                    {user.isAdmin &&
-                      <IconButton size="large" color="inherit" onClick={(e) => {
-                        setSelectedAuthorId(_id)
-                        handleOpenMenu(e)
-                      }}>
-                        <Iconify icon={'eva:more-vertical-fill'}/>
-                      </IconButton>
-                    }
+                    {user.isAdmin && <IconButton size="large" color="inherit" onClick={(e) => {
+                      setSelectedGenreId(_id)
+                      handleOpenMenu(e)
+                    }}>
+                      <Iconify icon={'eva:more-vertical-fill'}/>
+                    </IconButton>}
                   </TableCell>
                 </TableRow>);
               })}
             </TableBody></Table>
           </TableContainer> : <Alert severity="warning" color="warning">
-            No authors found
+            No genres found
           </Alert>}
         </Scrollbar>
-        {authors.length > 0 && <TablePagination
+        {genres.length > 0 && <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={authors.length}
+          count={genres.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -292,7 +269,7 @@ const AuthorPage = () => {
     >
       <MenuItem onClick={() => {
         setIsUpdateForm(true);
-        getSelectedAuthorDetails();
+        getSelectedGenreDetails();
         handleCloseMenu();
         handleOpenModal();
       }}>
@@ -306,15 +283,15 @@ const AuthorPage = () => {
       </MenuItem>
     </Popover>
 
-    <AuthorForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
-                id={selectedAuthorId} author={author} setAuthor={setAuthor}
-                handleAddAuthor={addAuthor} handleUpdateAuthor={updateAuthor}/>
+    <GenreForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
+                id={selectedGenreId} genre={genre} setGenre={setGenre}
+                handleAddGenre={addGenre} handleUpdateGenre={updateGenre}/>
 
-    <AuthorDialog isDialogOpen={isDialogOpen} authorId={selectedAuthorId} handleDeleteAuthor={deleteAuthor}
+    <GenreDialog isDialogOpen={isDialogOpen} genreId={selectedGenreId} handleDeleteGenre={deleteGenre}
                   handleCloseDialog={handleCloseDialog}/>
 
 
   </>);
 }
 
-export default AuthorPage
+export default GenrePage

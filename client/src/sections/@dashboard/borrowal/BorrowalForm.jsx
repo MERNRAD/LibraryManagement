@@ -17,7 +17,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import Iconify from "../../../components/iconify";
-import { useAuth } from "../../../useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 
 const BorrowalForm = ({
                         handleAddBorrowal,

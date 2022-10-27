@@ -24,14 +24,15 @@ import {
   Typography
 } from "@mui/material";
 
-import Iconify from "../components/iconify";
-import Scrollbar from "../components/scrollbar";
-import Label from "../components/label";
+import Iconify from "../../../components/iconify";
+import Scrollbar from "../../../components/scrollbar";
+import Label from "../../../components/label";
 
-import UserTableHead from "../sections/@dashboard/user/UserListHead";
-import UserForm from "../sections/@dashboard/user/UserForm";
-import UserDialog from "../sections/@dashboard/user/UserDialog";
-import { applySortFilter, getComparator } from "../utils/tableOperations";
+import UserTableHead from "./UserListHead";
+import UserForm from "./UserForm";
+import UserDialog from "./UserDialog";
+import { applySortFilter, getComparator } from "../../../utils/tableOperations";
+import { apiUrl, methods, routes } from "../../../constants";
 
 // ----------------------------------------------------------------------
 
@@ -80,22 +81,8 @@ const UserPage = () => {
 
   // API operations
 
-  const getUser = () => {
-    axios.get(`http://localhost:8080/api/user/get${selectedUserId}`)
-      .then((response) => {
-        // handle success
-        const {user} = response.data;
-        console.log(response.data.user);
-        setUser(user);
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error);
-      });
-  };
-
   const getAllUsers = () => {
-    axios.get("http://localhost:8080/api/user/getAll")
+    axios.get(apiUrl(routes.USER, methods.GET_ALL))
       .then((response) => {
         // handle success
         console.log(response.data);
@@ -109,7 +96,7 @@ const UserPage = () => {
   };
 
   const addUser = () => {
-    axios.post("http://localhost:8080/api/user/add", user)
+    axios.post(apiUrl(routes.USER, methods.POST), user)
       .then((response) => {
         console.log(response.data);
         toast.success("User added");
@@ -128,7 +115,7 @@ const UserPage = () => {
   };
 
   const updateUser = () => {
-    axios.put(`http://localhost:8080/api/user/update/${selectedUserId}`, user)
+    axios.put(apiUrl(routes.USER, methods.PUT, selectedUserId), user)
       .then((response) => {
         console.log(response.data);
         toast.success("User updated");
@@ -144,7 +131,7 @@ const UserPage = () => {
   };
 
   const deleteUser = (userId) => {
-    axios.delete(`http://localhost:8080/api/user/delete/${userId}`)
+    axios.delete(apiUrl(routes.USER, methods.DELETE, userId))
       .then((response) => {
         toast.success("User deleted");
         handleCloseDialog();

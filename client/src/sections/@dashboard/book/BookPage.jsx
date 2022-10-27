@@ -18,21 +18,22 @@ import {
 } from "@mui/material";
 import { Alert } from "@mui/lab";
 import { styled } from "@mui/material/styles";
-import { useAuth } from "../useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 
-import Label from "../components/label";
-import BookDialog from "../sections/@dashboard/book/BookDialog";
-import BookForm from "../sections/@dashboard/book/BookForm";
-import Iconify from "../components/iconify";
+import Label from "../../../components/label";
+import BookDialog from "./BookDialog";
+import BookForm from "./BookForm";
+import Iconify from "../../../components/iconify";
+import { apiUrl, methods, routes } from "../../../constants";
 
 // ----------------------------------------------------------------------
 
-const StyledBookImage = styled('img')({
+const StyledBookImage = styled("img")({
   top: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute',
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  position: "absolute"
 });
 
 const BookPage = () => {
@@ -51,22 +52,8 @@ const BookPage = () => {
 
   // API operations
 
-  const getBook = () => {
-    axios.get(`http://localhost:8080/api/book/get${selectedBookId}`)
-      .then((response) => {
-        // handle success
-        const {book} = response.data
-        console.log(response.data.book);
-        setBook(book)
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error);
-      })
-  }
-
   const getAllBooks = () => {
-    axios.get('http://localhost:8080/api/book/getAll')
+    axios.get(apiUrl(routes.BOOK, methods.GET_ALL))
       .then((response) => {
         // handle success
         console.log(response.data)
@@ -80,7 +67,7 @@ const BookPage = () => {
   }
 
   const addBook = () => {
-    axios.post('http://localhost:8080/api/book/add', book)
+    axios.post(apiUrl(routes.BOOK, methods.POST), book)
       .then((response) => {
         toast.success("Book added");
         console.log(response.data);
@@ -95,7 +82,7 @@ const BookPage = () => {
   }
 
   const updateBook = () => {
-    axios.put(`http://localhost:8080/api/book/update/${selectedBookId}`, book)
+    axios.put(apiUrl(routes.BOOK, methods.PUT, selectedBookId), book)
       .then((response) => {
         toast.success("Book updated");
         console.log(response.data);
@@ -111,7 +98,7 @@ const BookPage = () => {
   }
 
   const deleteBook = (bookId) => {
-    axios.delete(`http://localhost:8080/api/book/delete/${bookId}`)
+    axios.delete(apiUrl(routes.BOOK, methods.DELETE, bookId))
       .then((response) => {
         toast.success("Book deleted");
         handleCloseDialog();
@@ -158,15 +145,6 @@ const BookPage = () => {
   }, []);
 
   const [openFilter, setOpenFilter] = useState(false);
-
-  const handleOpenFilter = () => {
-    setOpenFilter(true);
-  };
-
-  const handleCloseFilter = () => {
-    setOpenFilter(false);
-  };
-
 
   const handleOpenModal = () => {
     setIsModalOpen(true)

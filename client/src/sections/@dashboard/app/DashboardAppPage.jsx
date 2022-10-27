@@ -1,13 +1,13 @@
 import { Helmet } from "react-helmet-async";
 import { useTheme } from "@mui/material/styles";
 import { Container, Grid, Typography } from "@mui/material";
-import { AppCurrentVisits, AppWebsiteVisits, AppWidgetSummary } from "../sections/@dashboard/app";
-import { useAuth } from "../useAuth";
+import { AppCurrentVisits, AppWebsiteVisits, AppWidgetSummary } from "./index";
+import { useAuth } from "../../../hooks/useAuth";
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
-  const {user} = useAuth();
+  const { user } = useAuth();
   const theme = useTheme();
 
   return (
