@@ -1,23 +1,8 @@
-import {Helmet} from 'react-helmet-async';
-import {faker} from '@faker-js/faker';
-// @mui
-import {useTheme} from '@mui/material/styles';
-import {Container, Grid, Typography} from '@mui/material';
-// components
-import Iconify from '../components/iconify';
-// sections
-import {
-  AppConversionRates,
-  AppCurrentSubject,
-  AppCurrentVisits,
-  AppNewsUpdate,
-  AppOrderTimeline,
-  AppTasks,
-  AppTrafficBySite,
-  AppWebsiteVisits,
-  AppWidgetSummary,
-} from '../sections/@dashboard/app';
-import {useAuth} from "../useAuth";
+import { Helmet } from "react-helmet-async";
+import { useTheme } from "@mui/material/styles";
+import { Container, Grid, Typography } from "@mui/material";
+import { AppCurrentVisits, AppWebsiteVisits, AppWidgetSummary } from "../sections/@dashboard/app";
+import { useAuth } from "../useAuth";
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +13,7 @@ export default function DashboardAppPage() {
   return (
     <>
       <Helmet>
-        <title> Library </title>
+        <title> Library | Dashboard </title>
       </Helmet>
 
       <Container maxWidth="xl">

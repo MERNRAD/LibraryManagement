@@ -1,8 +1,9 @@
-import {Helmet} from 'react-helmet-async';
-import {useEffect, useState} from 'react';
+import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-// @mui
-import {Alert} from "@mui/lab";
+import { Alert } from "@mui/lab";
 import {
   Avatar,
   Button,
@@ -20,32 +21,28 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
-  Typography,
-} from '@mui/material';
+  Typography
+} from "@mui/material";
 
-// components
-import axios from 'axios'
-import toast from "react-hot-toast";
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
-// sections
-import UserTableHead from '../sections/@dashboard/user/UserListHead'
-import UserForm from "../sections/@dashboard/user/UserForm";
-import UserDialog from "../sections/@dashboard/user/UserDialog";
-import {applySortFilter, getComparator} from "../utils/tableOperations";
+import Iconify from "../components/iconify";
+import Scrollbar from "../components/scrollbar";
 import Label from "../components/label";
 
+import UserTableHead from "../sections/@dashboard/user/UserListHead";
+import UserForm from "../sections/@dashboard/user/UserForm";
+import UserDialog from "../sections/@dashboard/user/UserDialog";
+import { applySortFilter, getComparator } from "../utils/tableOperations";
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  {id: 'photo', label: 'Photo', alignRight: false},
-  {id: 'name', label: 'Name', alignRight: false},
-  {id: 'dob', label: 'DOB', alignRight: false},
-  {id: 'email', label: 'Email', alignRight: false},
-  {id: 'phone', label: 'Phone', alignRight: false},
-  {id: 'role', label: 'Role', alignRight: false},
-  {id: '', label: '', alignRight: false},];
+  { id: "photo", label: "Photo", alignRight: false },
+  { id: "name", label: "Name", alignRight: false },
+  { id: "dob", label: "DOB", alignRight: false },
+  { id: "email", label: "Email", alignRight: false },
+  { id: "phone", label: "Phone", alignRight: false },
+  { id: "role", label: "Role", alignRight: false },
+  { id: "", label: "", alignRight: false }];
 
 // ----------------------------------------------------------------------
 
@@ -53,9 +50,9 @@ const UserPage = () => {
   // State variables
   // Table
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('name');
-  const [filterName, setFilterName] = useState('');
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("name");
+  const [filterName, setFilterName] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // Data
@@ -67,14 +64,14 @@ const UserPage = () => {
     phone: "",
     isAdmin: false,
     photoUrl: "https://www.pngitem.com/pimgs/m/645-6452863_profile-image-memoji-brown-hair-man-with-glasses.png"
-  })
+  });
   const [users, setUsers] = useState([]);
-  const [selectedUserId, setSelectedUserId] = useState(null)
-  const [isTableLoading, setIsTableLoading] = useState(true)
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [isTableLoading, setIsTableLoading] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isUpdateForm, setIsUpdateForm] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isUpdateForm, setIsUpdateForm] = useState(false);
 
   // Load data on initial page load
   useEffect(() => {
@@ -87,32 +84,32 @@ const UserPage = () => {
     axios.get(`http://localhost:8080/api/user/get${selectedUserId}`)
       .then((response) => {
         // handle success
-        const user = response.data.user
+        const {user} = response.data;
         console.log(response.data.user);
-        setUser(user)
+        setUser(user);
       })
       .catch((error) => {
         // handle error
         console.log(error);
-      })
-  }
+      });
+  };
 
   const getAllUsers = () => {
-    axios.get('http://localhost:8080/api/user/getAll')
+    axios.get("http://localhost:8080/api/user/getAll")
       .then((response) => {
         // handle success
-        console.log(response.data)
-        setUsers(response.data.usersList)
-        setIsTableLoading(false)
+        console.log(response.data);
+        setUsers(response.data.usersList);
+        setIsTableLoading(false);
       })
       .catch((error) => {
         // handle error
         console.log(error);
-      })
-  }
+      });
+  };
 
   const addUser = () => {
-    axios.post('http://localhost:8080/api/user/add', user)
+    axios.post("http://localhost:8080/api/user/add", user)
       .then((response) => {
         console.log(response.data);
         toast.success("User added");
@@ -122,13 +119,13 @@ const UserPage = () => {
       })
       .catch((error) => {
         if (error.response.status === 403) {
-          toast.error("User already exists")
+          toast.error("User already exists");
         } else {
           console.log(error);
-          toast.error("Something went wrong, please try again")
+          toast.error("Something went wrong, please try again");
         }
       });
-  }
+  };
 
   const updateUser = () => {
     axios.put(`http://localhost:8080/api/user/update/${selectedUserId}`, user)
@@ -142,9 +139,9 @@ const UserPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again");
       });
-  }
+  };
 
   const deleteUser = (userId) => {
     axios.delete(`http://localhost:8080/api/user/delete/${userId}`)
@@ -157,14 +154,14 @@ const UserPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Something went wrong, please try again")
+        toast.error("Something went wrong, please try again");
       });
-  }
+  };
 
   const getSelectedUserDetails = () => {
-    const selectedUser = users.find((element) => element._id === selectedUserId)
-    setUser(selectedUser)
-  }
+    const selectedUser = users.find((element) => element._id === selectedUserId);
+    setUser(selectedUser);
+  };
 
   const clearForm = () => {
     setUser({
@@ -175,8 +172,8 @@ const UserPage = () => {
       phone: "",
       isAdmin: false,
       photoUrl: ""
-    })
-  }
+    });
+  };
 
   // Handler functions
   const handleOpenMenu = (event) => {
@@ -188,18 +185,18 @@ const UserPage = () => {
   };
 
   const handleOpenDialog = () => {
-    setIsDialogOpen(true)
-  }
+    setIsDialogOpen(true);
+  };
 
   const handleCloseDialog = () => {
-    setIsDialogOpen(false)
-  }
+    setIsDialogOpen(false);
+  };
 
   // Table functions
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
     setUsers(applySortFilter(users, getComparator(order, orderBy), filterName));
   };
@@ -214,12 +211,12 @@ const UserPage = () => {
   };
 
   const handleOpenModal = () => {
-    setIsModalOpen(true)
-  }
+    setIsModalOpen(true);
+  };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false)
-  }
+    setIsModalOpen(false);
+  };
 
   return (<>
     <Helmet>
@@ -235,13 +232,13 @@ const UserPage = () => {
         <Button variant="contained" onClick={() => {
           setIsUpdateForm(false);
           handleOpenModal();
-        }} startIcon={<Iconify icon="eva:plus-fill"/>}>
+        }} startIcon={<Iconify icon="eva:plus-fill" />}>
           New User
         </Button>
       </Stack>
-      {isTableLoading ? <Grid style={{"textAlign": "center"}}><CircularProgress size="lg"/></Grid> : <Card>
+      {isTableLoading ? <Grid style={{ "textAlign": "center" }}><CircularProgress size="lg" /></Grid> : <Card>
         <Scrollbar>
-          {users.length > 0 ? <TableContainer sx={{minWidth: 800}}>
+          {users.length > 0 ? <TableContainer sx={{ minWidth: 800 }}>
             <Table>
               <UserTableHead
                 order={order}
@@ -250,34 +247,30 @@ const UserPage = () => {
                 rowCount={users.length}
                 onRequestSort={handleRequestSort}
               /><TableBody>
-              {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => {
+              {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) =><TableRow hover key={user._id} tabIndex={-1}>
 
-                return (<TableRow hover key={user._id} tabIndex={-1}>
+                <TableCell align="left"> <Avatar alt={user.name} src={user.photoUrl} /></TableCell>
 
+                <TableCell align="left">{user.name}</TableCell>
 
-                  <TableCell align="left"> <Avatar alt={user.name} src={user.photoUrl}/></TableCell>
+                <TableCell align="left">{(new Date(user.dob)).toLocaleDateString("en-US")}</TableCell>
 
-                  <TableCell align="left">{user.name}</TableCell>
+                <TableCell align="left">{user.email}</TableCell>
 
-                  <TableCell align="left">{(new Date(user.dob)).toLocaleDateString("en-US")}</TableCell>
+                <TableCell align="left">{user.phone}</TableCell>
 
-                  <TableCell align="left">{user.email}</TableCell>
+                <TableCell align="left">{user.isAdmin ? <Label color="warning">Librarian</Label> :
+                  <Label color="success">Member</Label>}</TableCell>
 
-                  <TableCell align="left">{user.phone}</TableCell>
-
-                  <TableCell align="left">{user.isAdmin ? <Label color="warning">Librarian</Label> :
-                    <Label color="success">Member</Label>}</TableCell>
-
-                  <TableCell align="right">
-                    <IconButton size="large" color="inherit" onClick={(e) => {
-                      setSelectedUserId(user._id)
-                      handleOpenMenu(e)
-                    }}>
-                      <Iconify icon={'eva:more-vertical-fill'}/>
-                    </IconButton>
-                  </TableCell>
-                </TableRow>);
-              })}
+                <TableCell align="right">
+                  <IconButton size="large" color="inherit" onClick={(e) => {
+                    setSelectedUserId(user._id);
+                    handleOpenMenu(e);
+                  }}>
+                    <Iconify icon={"eva:more-vertical-fill"} />
+                  </IconButton>
+                </TableCell>
+              </TableRow>)}
             </TableBody></Table>
           </TableContainer> : <Alert severity="warning" color="warning">
             No users found
@@ -299,14 +292,14 @@ const UserPage = () => {
       open={Boolean(isMenuOpen)}
       anchorEl={isMenuOpen}
       onClose={handleCloseMenu}
-      anchorOrigin={{vertical: 'top', horizontal: 'left'}}
-      transformOrigin={{vertical: 'top', horizontal: 'right'}}
+      anchorOrigin={{ vertical: "top", horizontal: "left" }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       PaperProps={{
         sx: {
-          p: 1, width: 140, '& .MuiMenuItem-root': {
-            px: 1, typography: 'body2', borderRadius: 0.75,
-          },
-        },
+          p: 1, width: 140, "& .MuiMenuItem-root": {
+            px: 1, typography: "body2", borderRadius: 0.75
+          }
+        }
       }}
     >
       <MenuItem onClick={() => {
@@ -315,25 +308,25 @@ const UserPage = () => {
         handleCloseMenu();
         handleOpenModal();
       }}>
-        <Iconify icon={'eva:edit-fill'} sx={{mr: 2}}/>
+        <Iconify icon={"eva:edit-fill"} sx={{ mr: 2 }} />
         Edit
       </MenuItem>
 
-      <MenuItem sx={{color: 'error.main'}} onClick={handleOpenDialog}>
-        <Iconify icon={'eva:trash-2-outline'} sx={{mr: 2}}/>
+      <MenuItem sx={{ color: "error.main" }} onClick={handleOpenDialog}>
+        <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} />
         Delete
       </MenuItem>
     </Popover>
 
     <UserForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
-                id={selectedUserId} user={user} setUser={setUser}
-                handleAddUser={addUser} handleUpdateUser={updateUser}/>
+              id={selectedUserId} user={user} setUser={setUser}
+              handleAddUser={addUser} handleUpdateUser={updateUser} />
 
     <UserDialog isDialogOpen={isDialogOpen} userId={selectedUserId} handleDeleteUser={deleteUser}
-                  handleCloseDialog={handleCloseDialog}/>
+                handleCloseDialog={handleCloseDialog} />
 
 
   </>);
-}
+};
 
-export default UserPage
+export default UserPage;

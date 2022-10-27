@@ -1,0 +1,24 @@
+{
+  "name": "library_management_system",
+  "version": "1.1.0",
+  "description": "Simple Library Management System (Fullstack Webapp) for RAD MERN project, built using the MERN stack",
+  "keywords": [
+    "rad",
+    "mern",
+    "fullstack",
+    "library-app"
+  ],
+  "authors": [
+    "Sandul Renuja",
+    "Abdullah Jasmine",
+    "Ravindu Wegiriya",
+    "Kaveesha Muthukuda",
+    "Induwara Pathirana"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server" : "(cd server && npm run start)",
+    "client" : "(cd client && npm run start)",
+    "start": "npm run server & npm run client"
+  }
+}

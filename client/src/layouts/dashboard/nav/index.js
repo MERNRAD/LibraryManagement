@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types';
-import {useEffect} from 'react';
-import {useLocation} from 'react-router-dom';
+import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 // @mui
-import {alpha, styled} from '@mui/material/styles';
-import {Avatar, Box, Drawer, Link, Typography} from '@mui/material';
+import { alpha, styled } from "@mui/material/styles";
+import { Avatar, Box, Drawer, Link, Typography } from "@mui/material";
 // mock
 // hooks
-import useResponsive from '../../../hooks/useResponsive';
+import useResponsive from "../../../hooks/useResponsive";
 // components
-import Logo from '../../../components/logo';
-import Scrollbar from '../../../components/scrollbar';
-import NavSection from '../../../components/nav-section';
+import Logo from "../../../components/logo";
+import Scrollbar from "../../../components/scrollbar";
+import NavSection from "../../../components/nav-section";
 //
-import navConfig from './config';
-import {useAuth} from "../../../useAuth";
+import navConfig from "./config";
+import { useAuth } from "../../../useAuth";
 
 // ----------------------------------------------------------------------
 
@@ -78,9 +78,7 @@ export default function Nav({openNav, onCloseNav}) {
         </Link>
       </Box>
 
-      <NavSection data={navConfig.filter((navLink) => {
-        return user.isAdmin || !(navLink.title === "Dashboard" || navLink.title === "Users")
-      })}/>
+      <NavSection data={navConfig.filter((navLink) => user.isAdmin || !(navLink.title === "Dashboard" || navLink.title === "Users"))}/>
 
       <Box sx={{flexGrow: 1}}/>
     </Scrollbar>

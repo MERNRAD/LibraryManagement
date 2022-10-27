@@ -64,7 +64,7 @@
     "react/function-component-definition": 0,
     "react/jsx-no-constructed-context-values": 0,
     "no-unused-vars": [
-      1,
+      0,
       {
         "ignoreRestSiblings": false
       }

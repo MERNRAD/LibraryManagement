@@ -1,11 +1,12 @@
-import {Helmet} from 'react-helmet-async';
-import {styled} from '@mui/material/styles';
-import {Container, Typography} from '@mui/material';
+import { Helmet } from "react-helmet-async";
+import { styled } from "@mui/material/styles";
 import axios from "axios";
 import toast from "react-hot-toast";
-import Logo from '../components/logo';
-import {LoginForm} from '../sections/auth/login';
-import {useAuth} from "../useAuth";
+import { Container, Typography } from "@mui/material";
+import { useAuth } from "../useAuth";
+
+import Logo from "../components/logo";
+import { LoginForm } from "../sections/auth/login";
 
 // ----------------------------------------------------------------------
 

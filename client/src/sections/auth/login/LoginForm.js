@@ -1,13 +1,12 @@
-import {useState} from 'react';
-// @mui
-import {IconButton, InputAdornment, Stack, TextField} from '@mui/material';
-import {LoadingButton} from '@mui/lab';
-// components
-import Iconify from '../../../components/iconify';
+import { useState } from "react";
+import { IconButton, InputAdornment, Stack, TextField } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import PropTypes from "prop-types";
+import Iconify from "../../../components/iconify";
 
 // ----------------------------------------------------------------------
 
-export default function LoginForm({loginUser}) {
+const LoginForm = ({loginUser}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -53,3 +52,9 @@ export default function LoginForm({loginUser}) {
     </>
   );
 }
+
+LoginForm.propTypes = {
+  loginUser: PropTypes.func,
+};
+
+export default LoginForm

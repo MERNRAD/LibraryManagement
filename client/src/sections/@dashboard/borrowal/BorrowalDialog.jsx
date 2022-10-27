@@ -1,8 +1,7 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import PropTypes from "prop-types";
 
-const BorrowalDialog = ({isDialogOpen, handleCloseDialog, borrowalId, handleDeleteBorrowal}) => {
-  return (
+const BorrowalDialog = ({isDialogOpen, handleCloseDialog, borrowalId, handleDeleteBorrowal}) =>
     <Dialog
       open={isDialogOpen}
       onClose={handleCloseDialog}
@@ -24,8 +23,6 @@ const BorrowalDialog = ({isDialogOpen, handleCloseDialog, borrowalId, handleDele
         </Button>
       </DialogActions>
     </Dialog>
-  )
-}
 
 BorrowalDialog.propTypes = {
   isDialogOpen: PropTypes.bool,

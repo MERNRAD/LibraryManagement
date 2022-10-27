@@ -1,6 +1,20 @@
 {
-  "name": "@minimal/material-kit-react",
-  "author": "minimals.cc",
+  "name": "library_management_system_frontend",
+  "description": "Frontend of a simple Library Management System for RAD MERN project, built using React and MUI (@minimal/material-kit-react)",
+  "keywords": [
+    "rad",
+    "mern",
+    "library-app",
+    "react",
+    "mui"
+  ],
+  "authors": [
+    "Sandul Renuja",
+    "Abdullah Jasmine",
+    "Ravindu Wegiriya",
+    "Kaveesha Muthukuda",
+    "Induwara Pathirana"
+  ],
   "licence": "MIT",
   "version": "1.6.0",
   "private": false,
@@ -40,15 +54,12 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@faker-js/faker": "^7.6.0",
     "@iconify/react": "^4.0.0",
     "@mui/lab": "^5.0.0-alpha.103",
     "@mui/material": "^5.10.9",
     "apexcharts": "^3.36.0",
     "axios": "^1.1.3",
-    "change-case": "^4.1.2",
     "date-fns": "^2.29.3",
-    "history": "^5.3.0",
     "lodash": "^4.17.21",
     "numeral": "^2.0.6",
     "prop-types": "^15.8.1",
@@ -67,12 +78,10 @@
   "devDependencies": {
     "@babel/core": "^7.19.3",
     "@babel/eslint-parser": "^7.19.1",
-    "@svgr/webpack": "^6.5.0",
     "eslint": "^8.25.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-prettier": "^4.2.1",

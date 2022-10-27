@@ -1,6 +1,8 @@
-import {Helmet} from 'react-helmet-async';
-import axios from 'axios';
-import {useEffect, useState} from 'react';
+import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+
 import {
   Box,
   Button,
@@ -13,24 +15,19 @@ import {
   Popover,
   Stack,
   Typography
-} from '@mui/material';
-import {styled} from '@mui/material/styles';
+} from "@mui/material";
+import { Alert } from "@mui/lab";
+import { styled } from "@mui/material/styles";
+import { useAuth } from "../useAuth";
 
-import toast from 'react-hot-toast';
-
-import {Alert} from "@mui/lab";
-import Iconify from '../components/iconify';
-import Label from '../components/label';
-
-// components
+import Label from "../components/label";
 import BookDialog from "../sections/@dashboard/book/BookDialog";
-
 import BookForm from "../sections/@dashboard/book/BookForm";
-import {useAuth} from "../useAuth";
+import Iconify from "../components/iconify";
 
 // ----------------------------------------------------------------------
 
-const StyledProductImg = styled('img')({
+const StyledBookImage = styled('img')({
   top: 0,
   width: '100%',
   height: '100%',
@@ -58,7 +55,7 @@ const BookPage = () => {
     axios.get(`http://localhost:8080/api/book/get${selectedBookId}`)
       .then((response) => {
         // handle success
-        const book = response.data.book
+        const {book} = response.data
         console.log(response.data.book);
         setBook(book)
       })
@@ -243,7 +240,7 @@ const BookPage = () => {
                     </Label>}
 
 
-                    <StyledProductImg alt={book.name} src={book.photoUrl}/>
+                    <StyledBookImage alt={book.name} src={book.photoUrl}/>
                   </Box>
 
                   <Stack spacing={1} sx={{p: 2}}>

@@ -1,8 +1,9 @@
-import {Helmet} from 'react-helmet-async';
-import {useEffect, useState} from 'react';
+import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-// @mui
-import {Alert} from "@mui/lab";
+import { Alert } from "@mui/lab";
 import {
   Button,
   Card,
@@ -19,21 +20,15 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
-  Typography,
-} from '@mui/material';
-
-// components
-import axios from 'axios'
-import toast from 'react-hot-toast';
-
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
-// sections
-import GenreTableHead from '../sections/@dashboard/genre/GenreListHead'
+  Typography
+} from "@mui/material";
+import Iconify from "../components/iconify";
+import Scrollbar from "../components/scrollbar";
+import GenreTableHead from "../sections/@dashboard/genre/GenreListHead";
 import GenreForm from "../sections/@dashboard/genre/GenreForm";
 import GenreDialog from "../sections/@dashboard/genre/GenreDialog";
-import {applySortFilter, getComparator} from "../utils/tableOperations";
-import {useAuth} from "../useAuth";
+import { applySortFilter, getComparator } from "../utils/tableOperations";
+import { useAuth } from "../useAuth";
 
 
 // ----------------------------------------------------------------------
@@ -81,7 +76,7 @@ const GenrePage = () => {
     axios.get(`http://localhost:8080/api/genre/get${selectedGenreId}`)
       .then((response) => {
         // handle success
-        const genre = response.data.genre
+        const {genre} = response.data
         console.log(response.data.genre);
         setGenre({id: genre._id, name: genre.name, description: genre.description})
       })
