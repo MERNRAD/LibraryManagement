@@ -14,7 +14,7 @@ export default function LoginForm({loginUser}) {
 
   return (
     <>
-      <Stack spacing={3}>
+      <Stack spacing={3} sx={{mb: 2}}>
         <TextField name="email" label="Email address" value={email} required onChange={
           (event) => {
             setEmail(event.target.value);
@@ -46,7 +46,7 @@ export default function LoginForm({loginUser}) {
       {/*  <Link variant="subtitle2">Get started</Link> */}
       {/* </Typography> */}
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained"
+      <LoadingButton sx={{mt: 4}} fullWidth size="large" type="submit" variant="contained"
                      onClick={() => loginUser(email, password)}>
         Login
       </LoadingButton>

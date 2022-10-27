@@ -69,7 +69,8 @@ export default function LoginPage() {
 
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" color="inherit" textAlign="center" gutterBottom paddingBottom={0}>
+            <Typography variant="h4" sx={{color: "#666666", fontWeight: "600"}} textAlign="center" gutterBottom
+                        paddingBottom={0}>
               Library System
             </Typography>
             <Typography variant="h3" textAlign="center" gutterBottom paddingBottom={3}>
