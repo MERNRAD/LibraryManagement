@@ -1,28 +1,17 @@
-import {useState} from 'react';
-import {alpha} from '@mui/material/styles';
-import {Avatar, Box, Divider, IconButton, MenuItem, Popover, Typography} from '@mui/material';
+import { useState } from "react";
+import { alpha } from "@mui/material/styles";
+import { Avatar, Box, Divider, IconButton, MenuItem, Popover, Typography } from "@mui/material";
 import axios from "axios";
-import {useAuth} from "../../../useAuth";
-
-// ----------------------------------------------------------------------
-
-const MENU_OPTIONS = [
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-];
-
-// ----------------------------------------------------------------------
+import { useAuth } from "../../../hooks/useAuth";
 
 export default function AccountPopover() {
-  const {user} = useAuth();
-  const {logout} = useAuth();
+  const { user } = useAuth();
+  const { logout } = useAuth();
   const [open, setOpen] = useState(null);
 
   const logoutUser = () => {
     handleClose();
-    axios.get(`http://localhost:8080/api/auth/logout`, {withCredentials: true})
+    axios.get(`http://localhost:8080/api/auth/logout`, { withCredentials: true })
       .then((response) => {
         // handle success
         if (response.status === 200) {

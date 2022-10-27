@@ -3,27 +3,27 @@ import { styled } from "@mui/material/styles";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Container, Typography } from "@mui/material";
-import { useAuth } from "../useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 
-import Logo from "../components/logo";
-import { LoginForm } from "../sections/auth/login";
+import Logo from "../../../components/logo";
+import { LoginForm } from "./index";
 
 // ----------------------------------------------------------------------
 
-const StyledRoot = styled('div')(({theme}) => ({
-  [theme.breakpoints.up('md')]: {
-    display: 'flex',
-  },
+const StyledRoot = styled("div")(({ theme }) => ({
+  [theme.breakpoints.up("md")]: {
+    display: "flex"
+  }
 }));
 
-const StyledContent = styled('div')(({ theme }) => ({
+const StyledContent = styled("div")(({ theme }) => ({
   maxWidth: 480,
-  margin: 'auto',
-  minHeight: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  padding: theme.spacing(12, 0),
+  margin: "auto",
+  minHeight: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "column",
+  padding: theme.spacing(12, 0)
 }));
 
 // ----------------------------------------------------------------------

@@ -22,26 +22,30 @@ import {
   TableRow,
   Typography
 } from "@mui/material";
-import Iconify from "../components/iconify";
-import Scrollbar from "../components/scrollbar";
-import GenreTableHead from "../sections/@dashboard/genre/GenreListHead";
-import GenreForm from "../sections/@dashboard/genre/GenreForm";
-import GenreDialog from "../sections/@dashboard/genre/GenreDialog";
-import { applySortFilter, getComparator } from "../utils/tableOperations";
-import { useAuth } from "../useAuth";
+import { useAuth } from "../../../hooks/useAuth";
+import Label from "../../../components/label";
+import Iconify from "../../../components/iconify";
+import Scrollbar from "../../../components/scrollbar";
+
+import BorrowalListHead from "./BorrowalListHead";
+import BorrowalForm from "./BorrowalForm";
+import BorrowalsDialog from "./BorrowalDialog";
+import { applySortFilter, getComparator } from "../../../utils/tableOperations";
+import { apiUrl, methods, routes } from "../../../constants";
+
+// ----------------------------------------------------------------------
+
+const TABLE_HEAD = [{ id: "memberName", label: "Member Name", alignRight: false },
+  { id: "bookName", label: "Book Name", alignRight: false },
+  { id: "borrowedDate", label: "Borrowed On", alignRight: false },
+  { id: "dueDate", label: "Due On", alignRight: false },
+  { id: "status", label: "Status", alignRight: false },
+  { id: "", label: "", alignRight: true }, { id: "", label: "", alignRight: false }];
 
 
 // ----------------------------------------------------------------------
 
-const TABLE_HEAD = [{
-  id: 'name',
-  label: 'Name',
-  alignRight: false
-}, {id: 'description', label: 'Description', alignRight: false}, {id: '', label: '', alignRight: false},];
-
-// ----------------------------------------------------------------------
-
-const GenrePage = () => {
+const BorrowalPage = () => {
   const {user} = useAuth();
   // State variables
   // Table
@@ -52,13 +56,15 @@ const GenrePage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // Data
-  const [genre, setGenre] = useState({
-    id: "",
-    name: "",
-    description: "",
+  const [borrowal, setBorrowal] = useState({
+    bookId: "",
+    memberId: "",
+    borrowedDate: "",
+    dueDate: "",
+    status: ""
   })
-  const [genres, setGenres] = useState([]);
-  const [selectedGenreId, setSelectedGenreId] = useState(null)
+  const [borrowals, setBorrowals] = useState([]);
+  const [selectedBorrowalId, setSelectedBorrowalId] = useState(null)
   const [isTableLoading, setIsTableLoading] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -67,31 +73,22 @@ const GenrePage = () => {
 
   // Load data on initial page load
   useEffect(() => {
-    getAllGenres();
+    getAllBorrowals();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // API operations
+  // API operations=
 
-  const getGenre = () => {
-    axios.get(`http://localhost:8080/api/genre/get${selectedGenreId}`)
-      .then((response) => {
-        // handle success
-        const {genre} = response.data
-        console.log(response.data.genre);
-        setGenre({id: genre._id, name: genre.name, description: genre.description})
-      })
-      .catch((error) => {
-        // handle error
-        console.log(error);
-      })
-  }
-
-  const getAllGenres = () => {
-    axios.get('http://localhost:8080/api/genre/getAll')
+  const getAllBorrowals = () => {
+    axios.get(apiUrl(routes.BORROWAL, methods.GET_ALL))
       .then((response) => {
         // handle success
         console.log(response.data)
-        setGenres(response.data.genresList)
+        if (user.isAdmin) {
+          setBorrowals(response.data.borrowalsList)
+        } else {
+          setBorrowals(response.data.borrowalsList.filter((borrowal) => user._id === borrowal.memberId))
+        }
         setIsTableLoading(false)
       })
       .catch((error) => {
@@ -100,13 +97,13 @@ const GenrePage = () => {
       })
   }
 
-  const addGenre = () => {
-    axios.post('http://localhost:8080/api/genre/add', genre)
+  const addBorrowal = () => {
+    axios.post(apiUrl(routes.BORROWAL, methods.POST), borrowal)
       .then((response) => {
+        toast.success("Borrowal added");
         console.log(response.data);
-        toast.success("Genre added");
         handleCloseModal();
-        getAllGenres();
+        getAllBorrowals();
         clearForm();
       })
       .catch((error) => {
@@ -115,14 +112,14 @@ const GenrePage = () => {
       });
   }
 
-  const updateGenre = () => {
-    axios.put(`http://localhost:8080/api/genre/update/${selectedGenreId}`, genre)
+  const updateBorrowal = () => {
+    axios.put(apiUrl(routes.BORROWAL, methods.PUT, selectedBorrowalId), borrowal)
       .then((response) => {
+        toast.success("Borrowal updated");
         console.log(response.data);
-        toast.success("Genre updated");
         handleCloseModal();
         handleCloseMenu();
-        getAllGenres();
+        getAllBorrowals();
         clearForm();
       })
       .catch((error) => {
@@ -131,14 +128,14 @@ const GenrePage = () => {
       });
   }
 
-  const deleteGenre = (genreId) => {
-    axios.delete(`http://localhost:8080/api/genre/delete/${genreId}`)
+  const deleteBorrowal = () => {
+    axios.delete(apiUrl(routes.BORROWAL, methods.PUT, selectedBorrowalId))
       .then((response) => {
-        toast.success("Genre deleted");
+        toast.success("Borrowal deleted");
         handleCloseDialog();
         handleCloseMenu();
         console.log(response.data);
-        getAllGenres();
+        getAllBorrowals();
       })
       .catch((error) => {
         console.log(error);
@@ -146,13 +143,19 @@ const GenrePage = () => {
       });
   }
 
-  const getSelectedGenreDetails = () => {
-    const selectedGenre = genres.find((element) => element._id === selectedGenreId)
-    setGenre(selectedGenre)
+  const getSelectedBorrowalDetails = () => {
+    const selectedBorrowals = borrowals.find((element) => element._id === selectedBorrowalId)
+    setBorrowal(selectedBorrowals)
   }
 
   const clearForm = () => {
-    setGenre({id: "", name: "", description: ""})
+    setBorrowal({
+      bookId: "",
+      memberId: "",
+      borrowedDate: "",
+      dueDate: "",
+      status: ""
+    })
   }
 
   // Handler functions
@@ -178,7 +181,7 @@ const GenrePage = () => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-    setGenres(applySortFilter(genres, getComparator(order, orderBy), filterName));
+    setBorrowal(applySortFilter(borrowal, getComparator(order, orderBy), filterName));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -200,64 +203,67 @@ const GenrePage = () => {
 
   return (<>
     <Helmet>
-      <title>Genres</title>
+      <title>Borrowals</title>
     </Helmet>
 
 
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h3" gutterBottom>
-          Genres
+          Borrowals
         </Typography>
-        {user.isAdmin && <Button variant="contained" onClick={() => {
+        <Button variant="contained" onClick={() => {
           setIsUpdateForm(false);
           handleOpenModal();
         }} startIcon={<Iconify icon="eva:plus-fill"/>}>
-          New Genre
-        </Button>}
+          New Borrowal
+        </Button>
       </Stack>
       {isTableLoading ? <Grid style={{"textAlign": "center"}}><CircularProgress size="lg"/></Grid> : <Card>
         <Scrollbar>
-          {genres.length > 0 ? <TableContainer sx={{minWidth: 800}}>
+          {borrowals.length > 0 ? <TableContainer sx={{minWidth: 800}}>
             <Table>
-              <GenreTableHead
+              <BorrowalListHead
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={genres.length}
+                rowCount={borrowal.length}
                 onRequestSort={handleRequestSort}
               /><TableBody>
-              {genres.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                const {_id, name, description, photoUrl} = row;
+              {borrowals.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((borrowal) => <TableRow hover key={borrowal._id} tabIndex={-1}>
 
-                return (<TableRow hover key={_id} tabIndex={-1}>
 
-                  <TableCell align="left"><Typography variant="subtitle2"
-                                                      noWrap>
-                    {name}
-                  </Typography></TableCell>
+                  <TableCell align="left"> {borrowal.member.name} </TableCell>
 
-                  <TableCell align="left">{description}</TableCell>
+                  <TableCell align="left">{borrowal.book.name}</TableCell>
+                  <TableCell align="left"> {(new Date(borrowal.borrowedDate)).toLocaleDateString("en-US")} </TableCell>
+
+                  <TableCell align="left">{(new Date(borrowal.dueDate)).toLocaleDateString("en-US")}</TableCell>
+
+                  <TableCell align="left">{borrowal.status}</TableCell>
+
+                  <TableCell align="left">
+                    {(new Date(borrowal.dueDate) < new Date()) &&
+                      <Label color="error" sx={{padding: 2}}>Overdue</Label>}</TableCell>
 
                   <TableCell align="right">
-                    {user.isAdmin && <IconButton size="large" color="inherit" onClick={(e) => {
-                      setSelectedGenreId(_id)
+                    <IconButton size="large" color="inherit" onClick={(e) => {
+                      setSelectedBorrowalId(borrowal._id)
                       handleOpenMenu(e)
                     }}>
                       <Iconify icon={'eva:more-vertical-fill'}/>
-                    </IconButton>}
+                    </IconButton>
                   </TableCell>
-                </TableRow>);
-              })}
+                </TableRow>)}
             </TableBody></Table>
           </TableContainer> : <Alert severity="warning" color="warning">
-            No genres found
+            No borrowals found
           </Alert>}
         </Scrollbar>
-        {genres.length > 0 && <TablePagination
+        {borrowals.length > 0 && <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={genres.length}
+          count={borrowals.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -282,7 +288,7 @@ const GenrePage = () => {
     >
       <MenuItem onClick={() => {
         setIsUpdateForm(true);
-        getSelectedGenreDetails();
+        getSelectedBorrowalDetails();
         handleCloseMenu();
         handleOpenModal();
       }}>
@@ -296,15 +302,16 @@ const GenrePage = () => {
       </MenuItem>
     </Popover>
 
-    <GenreForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
-                id={selectedGenreId} genre={genre} setGenre={setGenre}
-                handleAddGenre={addGenre} handleUpdateGenre={updateGenre}/>
+    <BorrowalForm isUpdateForm={isUpdateForm} isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}
+                  id={selectedBorrowalId} borrowal={borrowal} setBorrowal={setBorrowal}
+                  handleAddBorrowal={addBorrowal} handleUpdateBorrowal={updateBorrowal}/>
 
-    <GenreDialog isDialogOpen={isDialogOpen} genreId={selectedGenreId} handleDeleteGenre={deleteGenre}
-                  handleCloseDialog={handleCloseDialog}/>
+    <BorrowalsDialog isDialogOpen={isDialogOpen} borrowalsId={selectedBorrowalId}
+                     handleDeleteBorrowal={deleteBorrowal}
+                     handleCloseDialog={handleCloseDialog}/>
 
 
   </>);
 }
 
-export default GenrePage
+export default BorrowalPage

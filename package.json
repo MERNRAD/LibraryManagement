@@ -17,8 +17,9 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server" : "(cd server && npm run start)",
-    "client" : "(cd client && npm run start)",
+    "install": "(cd server && npm install) & (cd client && npm install)",
+    "server": "cd server && npm run start",
+    "client": "cd client && npm run start",
     "start": "npm run server & npm run client"
   }
 }
