@@ -90,6 +90,8 @@ git clone https://github.com/MERNRAD/LibraryManagement.git
 
 ### 🚀 Installing and executing (dev)
 
+### *You will need the .env file containing the environment variables in order to use the system, please contact the <a href="#-authors">authors</a>*
+
 1. cd to project folder (LibraryManagement)
 2. Run the following commands in terminal:
   - To install NPM packages
@@ -100,6 +102,20 @@ npm run install
 ```
 npm start
 ```
+
+3. Use the following demo accounts to login
+- Librarian
+```
+Email address: testlibrarian@library.com
+Password: librarian123
+```
+
+- Member
+```
+Email address: testmember@library.com
+Password: member123
+```
+
 <!-- HELP -->
 
 ## ❓ Help
