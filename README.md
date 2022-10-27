@@ -25,6 +25,7 @@ This is a simple fullstack web app for library management, built using the MERN 
     <li><a href="#-help">Help</a></li>
     <li><a href="#-authors">Authors</a></li>
     <li><a href="#-file-structure">File Structure</a></li>
+    <li><a href="#-gallery">Gallery</a></li>
     <li><a href="#-version-history">Version History</a></li>
     <li><a href="#-license">License</a></li>
     <li><a href="#-acknowledgments">Acknowledgments</a></li>
@@ -176,6 +177,31 @@ Contact authors if you need help or run into any issues
 |----|----------------------|---------------------------------|
 | 1  | server/index.js      | Node.js server app entry point  |
 | 2  | client/src/index.js  | Client react app entry point    |
+
+<!-- GALLERY -->
+
+###  📸 Gallery
+
+![Screenshot 2022-10-27 at 15 52 48 Large](https://user-images.githubusercontent.com/49369577/198261312-d21a461a-0dd9-46a8-897c-f8c06f76ef5a.jpeg)
+
+![Screenshot 2022-10-27 at 15 53 06 Large](https://user-images.githubusercontent.com/49369577/198261409-31625ee5-b743-4360-a54a-8c2834a26f41.jpeg)
+
+![Screenshot 2022-10-27 at 15 53 23 Large](https://user-images.githubusercontent.com/49369577/198261440-9c43f63e-9ba4-4f16-a552-9d210f40c8df.jpeg)
+
+![Screenshot 2022-10-27 at 15 53 31 Large](https://user-images.githubusercontent.com/49369577/198261486-fd2f6bfa-955f-4cdc-9716-091d5ba027a9.jpeg)
+
+![Screenshot 2022-10-27 at 15 53 38 Large](https://user-images.githubusercontent.com/49369577/198261620-a6669984-8a9a-4067-b9e8-e6f716d8f76b.jpeg)
+
+![Screenshot 2022-10-27 at 15 53 49 Large](https://user-images.githubusercontent.com/49369577/198261666-b550362c-4e69-47f4-aaf2-1bbcb278d96e.jpeg)
+
+![Screenshot 2022-10-27 at 15 54 04 Large](https://user-images.githubusercontent.com/49369577/198261690-4bc70865-4f25-403a-a2c2-a1f0192ab02a.jpeg)
+
+![Screenshot 2022-10-27 at 15 54 16 Large](https://user-images.githubusercontent.com/49369577/198261718-67c1800e-549c-4fe3-9219-95bcaf5302c6.jpeg)
+
+![Screenshot 2022-10-27 at 15 54 27 Large](https://user-images.githubusercontent.com/49369577/198261796-63cc2266-c59f-42ee-91aa-ea585df55fc2.jpeg)
+
+![Screenshot 2022-10-27 at 15 55 15 Large](https://user-images.githubusercontent.com/49369577/198261821-d5e36256-552c-4664-8018-cf9269ae768d.jpeg)
+
 
 <!-- VERSION HISTORY -->
 
