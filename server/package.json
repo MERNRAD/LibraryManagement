@@ -1,29 +1,29 @@
 {
   "name": "library_management_system_backend",
-  "version": "1.0.0",
-  "description": "Backend of simple Library Management System for RAD MERN project, built using Express and MongoDB",
+  "version": "1.1.0",
+  "description": "Backend of a simple Library Management System for RAD MERN project, built using Express and MongoDB",
+  "keywords": [
+    "rad",
+    "mern",
+    "library-app",
+    "express",
+    "mongodb"
+  ],
+  "authors": [
+    "Sandul Renuja",
+    "Abdullah Jasmine",
+    "Ravindu Wegiriya",
+    "Kaveesha Muthukuda",
+    "Induwara Pathirana"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "client": "npm start --prefix client",
-    "start": "concurrently \"npm run server\" \"npm run client\""
+    "start": "node index.js"
   },
-  "keywords": [
-    "rad",
-    "mern",
-    "library"
-  ],
-  "authors": [
-    "Ravindu Wegiriya",
-    "Abdullah Jasmine",
-    "Kaveesha Muthukuda",
-    "Sandul Renuja",
-    "Induwara Pathirana"
-  ],
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^7.5.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -31,11 +31,11 @@
     "express-session": "^1.17.3",
     "mongoose": "^6.6.7",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "nodemon": "^2.0.20",
     "mongodb": "^4.11.0"
   }
 }

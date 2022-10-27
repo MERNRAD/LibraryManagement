@@ -1,6 +1,9 @@
-import {Helmet} from 'react-helmet-async';
-import {useEffect, useState} from 'react';
-import {Alert} from "@mui/lab";
+import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+
+import { Alert } from "@mui/lab";
 import {
   Avatar,
   Button,
@@ -18,21 +21,17 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
-  Typography,
-} from '@mui/material';
+  Typography
+} from "@mui/material";
+import { useAuth } from "../useAuth";
 
-import axios from 'axios'
-import toast from 'react-hot-toast';
+import Iconify from "../components/iconify";
+import Scrollbar from "../components/scrollbar";
 
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
-
-import AuthorTableHead from '../sections/@dashboard/author/AuthorListHead'
+import AuthorTableHead from "../sections/@dashboard/author/AuthorListHead";
 import AuthorForm from "../sections/@dashboard/author/AuthorForm";
 import AuthorDialog from "../sections/@dashboard/author/AuthorDialog";
-import {applySortFilter, getComparator} from "../utils/tableOperations";
-import {useAuth} from "../useAuth";
-
+import { applySortFilter, getComparator } from "../utils/tableOperations";
 
 // ----------------------------------------------------------------------
 
@@ -80,7 +79,7 @@ const AuthorPage = () => {
     axios.get(`http://localhost:8080/api/author/get${selectedAuthorId}`)
       .then((response) => {
         // handle success
-        const author = response.data.author
+        const {author} = response.data
         console.log(response.data.author);
         setAuthor({id: "", name: author.name, description: author.description})
       })
@@ -204,7 +203,7 @@ const AuthorPage = () => {
 
   return (<>
     <Helmet>
-      <title>Authors</title>
+      <title>Library App | Authors</title>
     </Helmet>
 
 

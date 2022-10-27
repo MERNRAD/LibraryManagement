@@ -1,6 +1,9 @@
-import {Helmet} from 'react-helmet-async';
-import {useEffect, useState} from 'react';
-import {Alert} from "@mui/lab";
+import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+
+import { Alert } from "@mui/lab";
 import {
   Button,
   Card,
@@ -17,21 +20,17 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
-  Typography,
-} from '@mui/material';
+  Typography
+} from "@mui/material";
+import { useAuth } from "../useAuth";
+import Label from "../components/label";
+import Iconify from "../components/iconify";
+import Scrollbar from "../components/scrollbar";
 
-import axios from 'axios'
-import toast from 'react-hot-toast';
-
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
-import BorrowalListHead from '../sections/@dashboard/borrowal/BorrowalListHead'
+import BorrowalListHead from "../sections/@dashboard/borrowal/BorrowalListHead";
 import BorrowalForm from "../sections/@dashboard/borrowal/BorrowalForm";
 import BorrowalsDialog from "../sections/@dashboard/borrowal/BorrowalDialog";
-import {applySortFilter, getComparator} from "../utils/tableOperations";
-import Label from "../components/label";
-import {useAuth} from "../useAuth";
-
+import { applySortFilter, getComparator } from "../utils/tableOperations";
 
 // ----------------------------------------------------------------------
 
@@ -74,6 +73,7 @@ const BorrowalPage = () => {
   // Load data on initial page load
   useEffect(() => {
     getAllBorrowals();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // API operations=
@@ -241,8 +241,7 @@ const BorrowalPage = () => {
                 rowCount={borrowal.length}
                 onRequestSort={handleRequestSort}
               /><TableBody>
-              {borrowals.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((borrowal) => {
-                return (<TableRow hover key={borrowal._id} tabIndex={-1}>
+              {borrowals.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((borrowal) => <TableRow hover key={borrowal._id} tabIndex={-1}>
 
 
                   <TableCell align="left"> {borrowal.member.name} </TableCell>
@@ -266,8 +265,7 @@ const BorrowalPage = () => {
                       <Iconify icon={'eva:more-vertical-fill'}/>
                     </IconButton>
                   </TableCell>
-                </TableRow>);
-              })}
+                </TableRow>)}
             </TableBody></Table>
           </TableContainer> : <Alert severity="warning" color="warning">
             No borrowals found

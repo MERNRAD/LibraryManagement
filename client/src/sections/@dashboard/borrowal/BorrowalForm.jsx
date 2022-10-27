@@ -10,14 +10,14 @@ import {
   Select,
   Stack,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import PropTypes from "prop-types";
 import axios from "axios";
 import toast from "react-hot-toast";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Iconify from "../../../components/iconify";
-import {useAuth} from "../../../useAuth";
+import { useAuth } from "../../../useAuth";
 
 const BorrowalForm = ({
                         handleAddBorrowal,
@@ -29,7 +29,6 @@ const BorrowalForm = ({
                         setBorrowal,
                       }) => {
   const {user} = useAuth();
-  const [isModalLoading, setIsModalLoading] = useState(true)
   const [members, setMembers] = useState([]);
   const [books, setBooks] = useState([]);
 
@@ -58,7 +57,6 @@ const BorrowalForm = ({
         // handle success
         console.log(response.data)
         setBooks(response.data.booksList)
-        setIsModalLoading(false)
       })
       .catch((error) => {
         // handle error
@@ -71,6 +69,7 @@ const BorrowalForm = ({
   useEffect(() => {
     getAllMembers();
     getAllBooks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const style = {
@@ -131,9 +130,7 @@ const BorrowalForm = ({
                     label="Book"
                     onChange={(e) => setBorrowal({...borrowal, bookId: e.target.value})}>
                     {
-                      books.filter((book) => {
-                        return book.isAvailable
-                      }).map((book) => <MenuItem key={book._id}
+                      books.filter((book) => book.isAvailable).map((book) => <MenuItem key={book._id}
                                                  value={book._id}>{book.name}</MenuItem>)
                     }
                   </Select>

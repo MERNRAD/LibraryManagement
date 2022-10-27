@@ -1,8 +1,7 @@
-import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink } from 'react-router-dom';
-// @mui
-import { styled } from '@mui/material/styles';
-import { Button, Typography, Container, Box } from '@mui/material';
+import { Helmet } from "react-helmet-async";
+import { Link as RouterLink } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import { Box, Button, Container, Typography } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +21,7 @@ export default function Page404() {
   return (
     <>
       <Helmet>
-        <title> 404 Page Not Found | Minimal UI </title>
+        <title> 404 Page Not Found</title>
       </Helmet>
 
       <Container>
@@ -32,7 +31,7 @@ export default function Page404() {
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be sure to check your
+            Sorry, we couldn't find the page you’re looking for. Perhaps you’ve mistyped the URL? Be sure to check your
             spelling.
           </Typography>
 

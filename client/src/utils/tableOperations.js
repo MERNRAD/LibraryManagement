@@ -1,4 +1,4 @@
-import {filter} from "lodash";
+import { filter } from "lodash";
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -10,9 +10,8 @@ const descendingComparator = (a, b, orderBy) => {
   return 0;
 }
 
-const getComparator = (order, orderBy) => {
-  return order === 'desc' ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
-}
+const getComparator = (order, orderBy) =>
+  order === 'desc' ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
 
 const applySortFilter = (array, comparator, query) => {
   const stabilizedThis = array.map((el, index) => [el, index]);

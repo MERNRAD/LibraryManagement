@@ -1,8 +1,7 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import PropTypes from "prop-types";
 
-const UserDialog = ({isDialogOpen, handleCloseDialog, userId, handleDeleteUser}) => {
-  return (
+const UserDialog = ({isDialogOpen, handleCloseDialog, userId, handleDeleteUser}) =>
     <Dialog
       open={isDialogOpen}
       onClose={handleCloseDialog}
@@ -24,8 +23,6 @@ const UserDialog = ({isDialogOpen, handleCloseDialog, userId, handleDeleteUser})
         </Button>
       </DialogActions>
     </Dialog>
-  )
-}
 
 UserDialog.propTypes = {
   isDialogOpen: PropTypes.bool,

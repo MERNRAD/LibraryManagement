@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
-// @mui
-import { styled, alpha } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
-// component
-import Iconify from '../../../components/iconify';
+import PropTypes from "prop-types";
+import { alpha, styled } from "@mui/material/styles";
+import { IconButton, InputAdornment, OutlinedInput, Toolbar, Tooltip, Typography } from "@mui/material";
+import Iconify from "../../../components/iconify";
 
 // ----------------------------------------------------------------------
 

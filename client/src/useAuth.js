@@ -1,21 +1,26 @@
-import {createContext, useContext, useMemo} from "react";
-import {useNavigate} from "react-router-dom";
-import {useLocalStorage} from "./useLocalStorage";
+import { createContext, useContext, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import { useLocalStorage } from "./useLocalStorage";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useLocalStorage("user", null);
   const navigate = useNavigate();
 
   const login = async (data) => {
     setUser(data);
-    navigate("/dashboard", {replace: true});
+    if (data.isAdmin) {
+      navigate("/dashboard", { replace: true });
+    } else {
+      navigate("/books", { replace: true });
+    }
   };
 
   const logout = () => {
     setUser(null);
-    navigate("/login", {replace: true});
+    navigate("/login", { replace: true });
   };
 
   const value = useMemo(
@@ -24,12 +29,15 @@ export const AuthProvider = ({children}) => {
       login,
       logout
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [user]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
+AuthProvider.propTypes = {
+  children: PropTypes.node
 };
+
+export const useAuth = () => useContext(AuthContext);

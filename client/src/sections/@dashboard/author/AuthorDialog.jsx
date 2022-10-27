@@ -1,9 +1,7 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import PropTypes from "prop-types";
 
-const AuthorDialog = ({isDialogOpen, handleCloseDialog, authorId, handleDeleteAuthor}) => {
-  return (
-    <Dialog
+const AuthorDialog = ({isDialogOpen, handleCloseDialog, authorId, handleDeleteAuthor}) => <Dialog
       open={isDialogOpen}
       onClose={handleCloseDialog}
       aria-labelledby="alert-dialog-title"
@@ -24,8 +22,6 @@ const AuthorDialog = ({isDialogOpen, handleCloseDialog, authorId, handleDeleteAu
         </Button>
       </DialogActions>
     </Dialog>
-  )
-}
 
 AuthorDialog.propTypes = {
   isDialogOpen: PropTypes.bool,
