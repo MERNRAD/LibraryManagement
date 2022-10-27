@@ -118,7 +118,7 @@ Contact authors if you need help or run into any issues
 
 <!-- FILE STRUCTURE -->
 
-###  📂 File Structure *
+###  📂 File Structure
 ```
 .
 ├── client
