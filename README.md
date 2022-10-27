@@ -18,7 +18,7 @@ This is a simple fullstack web app for library management, built using the MERN 
       <a href="#-getting-started">Getting Started</a>
       <ul>
         <li><a href="#-prerequisites">Prerequisites</a></li>
-        <li><a href="#-downloading">Prerequisites</a></li>
+        <li><a href="#-downloading">Downloading</a></li>
         <li><a href="#-installing-and-executing-dev">Installing and executing (dev)</a></li>
       </ul>
     </li>
