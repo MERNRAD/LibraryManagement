@@ -3,6 +3,34 @@ _Current version: v1.1_
 
 This is a simple fullstack web app for library management, built using the MERN stack.
 
+<!-- TABLE OF CONTENTS -->
+
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#-about-the-project">About the project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#-getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#-prerequisites">Prerequisites</a></li>
+        <li><a href="#-downloading">Prerequisites</a></li>
+        <li><a href="#-installing-and-executing-dev">Installing and executing (dev)</a></li>
+      </ul>
+    </li>
+    <li><a href="#-help">Help</a></li>
+    <li><a href="#-authors">Authors</a></li>
+    <li><a href="#-file-structure">File Structure</a></li>
+    <li><a href="#-version-history">Version History</a></li>
+    <li><a href="#-license">License</a></li>
+    <li><a href="#-acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
 <!-- ABOUT THE PROJECT -->
 
 ## 🔰 About the project
@@ -45,7 +73,7 @@ Members can:
 
 ## ⚡ Getting Started
 
-### Prerequisites
+### ❕ Prerequisites
 You need a computing environment with an up to date version of Windows/Mac OS/Linux and a working internet connection
 
 * Git
@@ -112,6 +140,7 @@ Contact authors if you need help or run into any issues
 │       ├── utils
 │       ├── App.jsx
 │       ├── index.js
+│       ├── constants.js
 │       └── routes.js
 │
 ├── server
