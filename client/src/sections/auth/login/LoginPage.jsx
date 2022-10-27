@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Container, Typography } from "@mui/material";
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 
 import Logo from "../../../components/logo";
@@ -29,13 +30,20 @@ const StyledContent = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
-  const {login} = useAuth();
+  const { login, user } = useAuth();
+
+  if (user) {
+    if (user.isAdmin) {
+      return <Navigate to={"/dashboard"} replace />;
+    }
+    return <Navigate to={"/books"} replace />;
+  }
 
   const loginUser = (email, password) => {
-    if (email === '' || password === '') {
-      toast.error("Please enter email and password")
+    if (email === "" || password === "") {
+      toast.error("Please enter email and password");
     } else {
-      axios.post(`http://localhost:8080/api/auth/login`, {email, password}, {withCredentials: false})
+      axios.post(`http://localhost:8080/api/auth/login`, { email, password }, { withCredentials: false })
         .then((response) => {
           // handle success
           if (response.status === 200) {
@@ -48,7 +56,7 @@ export default function LoginPage() {
           // handle error
           toast.error(error.response.data.message);
           console.log(error);
-        })
+        });
     }
   };
 
@@ -62,15 +70,15 @@ export default function LoginPage() {
       <StyledRoot>
         <Logo
           sx={{
-            position: 'fixed',
+            position: "fixed",
             top: { xs: 16, sm: 24, md: 40 },
-            left: { xs: 16, sm: 24, md: 40 },
+            left: { xs: 16, sm: 24, md: 40 }
           }}
         />
 
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" sx={{color: "#666666", fontWeight: "600"}} textAlign="center" gutterBottom
+            <Typography variant="h4" sx={{ color: "#666666", fontWeight: "600" }} textAlign="center" gutterBottom
                         paddingBottom={0}>
               Library System
             </Typography>
@@ -78,7 +86,7 @@ export default function LoginPage() {
               Sign in
             </Typography>
 
-            <LoginForm loginUser={loginUser}/>
+            <LoginForm loginUser={loginUser} />
 
           </StyledContent>
         </Container>

@@ -19,7 +19,7 @@ export default function Router() {
       path: "/",
       element: <LibraryApp />,
       children: [
-        { element: <Navigate to="/app" />, index: true },
+        { element: <Navigate to="/dashboard" />, index: true },
         { path: "dashboard", element: <DashboardAppPage /> },
         { path: "authors", element: <AuthorPage /> },
         { path: "books", element: <BookPage /> },
@@ -29,46 +29,66 @@ export default function Router() {
       ]
     },
     {
-      path: 'login',
-      element: <LoginPage/>,
+      path: "login",
+      element: <LoginPage />
     },
     {
-      path: '404',
-      element: <Page404/>,
+      path: "404",
+      element: <Page404 />
     },
     {
-      path: '*',
-      element: <Navigate to="/404" replace/>,
-    },
-  ]);
-  const memberRoutes = useRoutes([
-    {
-      path: '/',
-      element: <LibraryApp/>,
-      children: [
-        {element: <Navigate to="/app"/>, index: true},
-        {path: 'books', element: <BookPage/>},
-        {path: 'authors', element: <AuthorPage/>},
-        {path: 'genres', element: <GenrePage/>},
-        {path: 'borrowals', element: <BorrowalPage/>},
-      ],
-    },
-    {
-      path: 'login',
-      element: <LoginPage/>,
-    },
-    {
-      path: '404',
-      element: <Page404/>,
-    },
-    {
-      path: '*',
-      element: <Navigate to="/404" replace/>,
-    },
+      path: "*",
+      element: <Navigate to="/404" replace />
+    }
   ]);
 
-  if(user == null || !user.isAdmin){
-    return memberRoutes
+  const memberRoutes = useRoutes([
+    {
+      path: "/",
+      element: <LibraryApp />,
+      children: [
+        { element: <Navigate to="/books" />, index: true },
+        { path: "books", element: <BookPage /> },
+        { path: "authors", element: <AuthorPage /> },
+        { path: "genres", element: <GenrePage /> },
+        { path: "borrowals", element: <BorrowalPage /> }
+      ]
+    },
+    {
+      path: "login",
+      element: <LoginPage />
+    },
+    {
+      path: "404",
+      element: <Page404 />
+    },
+    {
+      path: "*",
+      element: <Navigate to="/404" replace />
+    }
+  ]);
+
+  const guestRoutes = useRoutes([
+    {
+      path: "login",
+      element: <LoginPage />
+    },
+    {
+      path: "404",
+      element: <Page404 />
+    },
+    {
+      path: "*",
+      element: <Navigate to="/login" replace />
+    }
+  ]);
+
+  if (user) {
+    if (user.isAdmin) {
+      return adminRoutes;
+
+    }
+    return memberRoutes;
   }
-  return adminRoutes
+  return guestRoutes;
 }
